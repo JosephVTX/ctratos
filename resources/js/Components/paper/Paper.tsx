@@ -44,9 +44,8 @@ export default function Paper({
                 </p>
             </div>
 
-            <h4 className={`${showTitle ? "block" : "hidden"} text-center`}>
-                {title}
-            </h4>
+            {title && <h4 className="text-center font-black">{title}</h4>}
+
             {children}
         </div>
     );

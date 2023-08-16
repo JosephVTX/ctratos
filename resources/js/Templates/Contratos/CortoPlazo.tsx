@@ -2,7 +2,8 @@ import Paper from "@/Components/paper/Paper";
 import React from "react";
 import Clausula from "./Partials/Clausula";
 import SubClausula from "./Partials/SubClausula";
-import PaperPdf from "@/Components/paper/PaperPdf";
+import PaperMedia from "@/Components/paper/PaperMedia";
+import { isImage } from "@/Helpers/Files";
 
 type Props = {
     logo?: boolean;
@@ -32,9 +33,9 @@ type Props = {
     celular: string;
     dni_anverso: string;
     dni_reverso: string;
-    declaracion_jurada: File;
-    sustento_declaracion_jurada: File;
-    comprobantes_pago: File;
+    declaracion_jurada: File[];
+    sustento_declaracion_jurada: File[];
+    comprobantes_pago: File[];
 };
 
 const Miss = ({ title }: { title: string }) => (
@@ -67,7 +68,7 @@ export default function CortoPlazo(props: Props) {
         dni_reverso,
         declaracion_jurada,
         sustento_declaracion_jurada,
-        comprobantes_pago
+        comprobantes_pago,
     } = props;
     return (
         <div>
@@ -425,7 +426,7 @@ export default function CortoPlazo(props: Props) {
                     </SubClausula>
                 </Clausula>
             </Paper>
-            <Paper showTitle={false} logo={logo}>
+            <Paper logo={logo}>
                 <SubClausula sectionNumber="11.2">
                     Las comunicaciones virtuales realizadas durante la ejecución
                     del contrato surtirán efecto desde el día de recibidas en
@@ -520,14 +521,37 @@ export default function CortoPlazo(props: Props) {
                 </section>
             </Paper>
 
-            <Paper>
+            <Paper logo={logo}>
                 <img src={dni_anverso} alt="" />
                 <img src={dni_reverso} alt="" />
             </Paper>
 
-            <PaperPdf file={declaracion_jurada} />
-            <PaperPdf file={sustento_declaracion_jurada} />
-            <PaperPdf file={comprobantes_pago} />
+            {declaracion_jurada.map((file, index) => (
+                <PaperMedia
+                    isImage={isImage(file)}
+                    logo={logo}
+                    file={file}
+                    key={index}
+                />
+            ))}
+
+            {sustento_declaracion_jurada.map((file, index) => (
+                <PaperMedia
+                    isImage={isImage(file)}
+                    logo={logo}
+                    file={file}
+                    key={index}
+                />
+            ))}
+
+            {comprobantes_pago.map((file, index) => (
+                <PaperMedia
+                    isImage={isImage(file)}
+                    logo={logo}
+                    file={file}
+                    key={index}
+                />
+            ))}
         </div>
     );
 }

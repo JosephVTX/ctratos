@@ -8,8 +8,11 @@ type Props = {
     url?: string;
 
     file?: File;
+
+    logo?: boolean;
 };
-export default function PaperPdf({ url, file }: Props) {
+
+const Pdf = ({ url, file, logo }: Props) => {
     const [pages, setPages] = useState<Array<JSX.Element>>([]);
     const loadPDF = async () => {
         const loadingTask = pdfjs.getDocument(
@@ -30,7 +33,7 @@ export default function PaperPdf({ url, file }: Props) {
                 viewport,
             }).promise;
             newPages.push(
-                <Paper key={i}>
+                <Paper logo={logo} key={i}>
                     <img src={canvas.toDataURL()} alt={`Page ${i}`} />
                 </Paper>
             );
@@ -41,7 +44,32 @@ export default function PaperPdf({ url, file }: Props) {
 
     useEffect(() => {
         loadPDF();
-    }, []);
+    }, [logo, file]);
 
-    return <>{pages}</>;
+    return pages;
+};
+
+const Image = ({ url, file, logo }: Props) => {
+    return (
+        <Paper logo={logo}>
+            <img src={url ?? URL.createObjectURL(file!)} alt="" />
+        </Paper>
+    );
+};
+
+export default function PaperMedia({
+    url,
+    file,
+    logo,
+    isImage,
+}: Props & { isImage: boolean }) {
+    return (
+        <>
+            {isImage ? (
+                <Image url={url} file={file} logo={logo} />
+            ) : (
+                <Pdf url={url} file={file} logo={logo} />
+            )}
+        </>
+    );
 }

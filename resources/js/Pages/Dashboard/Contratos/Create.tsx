@@ -183,9 +183,9 @@ export default function Create({
 
         dni_anverso: "",
         dni_reverso: "",
-        declaracion_jurada: new File([""], "filename"),
-        sustento_declaracion_jurada: new File([""], "filename"),
-        comprobantes_pago: new File([""], "filename"),
+        declaracion_jurada: [new File([""], "")],
+        sustento_declaracion_jurada: [new File([""], "")],
+        comprobantes_pago: [new File([""], "")],
     });
 
     useEffect(() => {
@@ -215,6 +215,7 @@ export default function Create({
                                     onChange={(e) =>
                                         setData("nombres", e.target.value)
                                     }
+                                    keyfilter={/^[a-zA-Z\s]*$/}
                                 />
                             </div>
                             <div>
@@ -229,6 +230,7 @@ export default function Create({
                                     onChange={(e) =>
                                         setData("apellidos", e.target.value)
                                     }
+                                    keyfilter={/^[a-zA-Z\s]*$/}
                                 />
                             </div>
                             <div>
@@ -247,6 +249,7 @@ export default function Create({
                                         setData("tipo_doc", e.target.value)
                                     }
                                     placeholder="Seleccione"
+                                    
                                 />
                             </div>
                             <div>
@@ -261,6 +264,9 @@ export default function Create({
                                     onChange={(e) =>
                                         setData("numero_doc", e.target.value)
                                     }
+                                    keyfilter={"int"}
+
+                                    maxLength={ data.tipo_doc === "dni" ? 8 : data.tipo_doc === "ce" ? 15 : 12}
                                 />
                             </div>
                         </section>
@@ -437,11 +443,18 @@ export default function Create({
                                     )}
                                     optionLabel="percent"
                                     filter
-                                    valueTemplate={(o) => (
-                                        <span className="text-sm">
+                                    valueTemplate={(o, props) => {
+
+
+                                        if(o) {
+
+                                            return <span className="text-sm">
                                             {o?.porcentaje} %
                                         </span>
-                                    )}
+                                        }
+
+                                        return props?.placeholder
+                                    }}
                                     itemTemplate={(o) => (
                                         <span className="text-sm">
                                             {o?.porcentaje} %
@@ -475,18 +488,21 @@ export default function Create({
                                             {option?.cantidad} {option?.unidad}
                                         </span>
                                     )}
+
+                                    valueTemplate={(o, props) => {
+
+                                        if(o) {
+
+                                            return <span className="text-sm">
+                                            {o?.cantidad} {o?.unidad}
+                                        </span>
+                                        }
+
+                                        return props?.placeholder
+                                    }}
                                     onChange={(e) =>
                                         setData(
-                                            "vigencia_contrato",
-
-                                            `${e.target.value} ${
-                                                vigencia_contratos.find(
-                                                    (v) =>
-                                                        v.cantidad ===
-                                                        e.target.value
-                                                )?.unidad
-                                            }`
-                                        )
+                                            "vigencia_contrato", e.value)
                                     }
                                     placeholder="Seleccione"
                                 />
@@ -771,13 +787,13 @@ export default function Create({
                                     id="declaracion_jurada"
                                     name="declaracion_jurada"
                                     onChange={(e) =>
-                                        setData(
-                                            "declaracion_jurada",
-                                            e.target.files![0]
-                                        )
+                                        setData("declaracion_jurada", [
+                                            ...e.target.files!,
+                                        ])
                                     }
                                     type="file"
                                     accept=".png,.jpg,.jpeg,.webp, .pdf"
+                                    multiple
                                 />
                             </div>
                             <div>
@@ -789,13 +805,13 @@ export default function Create({
                                     id="sustento_declaracion_jurada"
                                     name="sustento_declaracion_jurada"
                                     onChange={(e) =>
-                                        setData(
-                                            "sustento_declaracion_jurada",
-                                            e.target.files![0]
-                                        )
+                                        setData("sustento_declaracion_jurada", [
+                                            ...e.target.files!,
+                                        ])
                                     }
                                     type="file"
                                     accept=".png,.jpg,.jpeg,.webp, .pdf"
+                                    multiple
                                 />
                             </div>
                         </section>
@@ -809,13 +825,13 @@ export default function Create({
                                     id="comprobantes_pago"
                                     name="comprobantes_pago"
                                     onChange={(e) =>
-                                        setData(
-                                            "comprobantes_pago",
-                                            e.target.files![0]
-                                        )
+                                        setData("comprobantes_pago", [
+                                            ...e.target.files!,
+                                        ])
                                     }
                                     type="file"
                                     accept=".png,.jpg,.jpeg,.webp, .pdf"
+                                    multiple
                                 />
                             </div>
                         </section>

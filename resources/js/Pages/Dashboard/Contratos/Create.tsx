@@ -36,6 +36,54 @@ const generoOptions = [
     },
 ];
 
+const bancoClienteOptions = [
+    {
+        label: "Banco de Crédito del Perú",
+    },
+    {
+        label: "Banco Interbank",
+    },
+    {
+        label: "Banco Scotiabank Perú",
+    },
+    {
+        label: "Banco BBVA Perú",
+    },
+    {
+        label: "Banco de la Nación",
+    },
+    {
+        label: "Banco Pichincha",
+    },
+    {
+        label: "Banco Falabella",
+    }
+
+];
+
+const bancoGJGSolesOptions = [
+    {
+        label: "Banco Interbank Soles",
+        value: "2003004202994",
+    },
+    {
+        label: "Banco BBVA Soles",
+        value: "001103680100051143",
+    },
+];
+
+const bancoGJGDolaresOptions = [
+    {
+        label: "Banco Interbank Dólares",
+        value: "2003004203000",
+    },
+    {
+        label: "Banco BBVA Dólares",
+        value: "001103680100051151",
+    },
+];
+    
+
 type Props = {
     departamentos: [
         {
@@ -76,6 +124,15 @@ type Props = {
             tipo_contrato_id: number;
         }
     ];
+
+    vigencia_contratos: [
+        {
+            id: number;
+            cantidad: number;
+            unidad: string;
+            rentabilidad_id: number;
+        }
+    ];
 };
 
 export default function Create({
@@ -84,6 +141,7 @@ export default function Create({
     distritos,
     tipo_contratos,
     rentabilidades,
+    vigencia_contratos,
 }: Props) {
     const { data, setData, errors, post } = useForm({
         nombres: "",
@@ -112,6 +170,16 @@ export default function Create({
             id: 0,
             porcentaje: 0,
         },
+        vigencia_contrato: "",
+        moneda: "",
+        capital: "",
+        fecha_inicio: "",
+        fecha_fin: "",
+        banco_cliente: "",
+        tipo_cuenta_cliente: "",
+        numero_cuenta_cliente: "",
+        numero_cci_cliente: "",
+        banco_gjg: "",
     });
 
     console.log(data);
@@ -353,6 +421,230 @@ export default function Create({
                                     setData("rentabilidad", e.target.value)
                                 }
                                 placeholder="Seleccione"
+                            />
+                        </div>
+                        <div>
+                            <InputLabel
+                                value="Vigencia de Contrato"
+                                htmlFor="vigencia_contratos"
+                            />
+                            <Dropdown
+                                inputId="vigencia_contratos"
+                                className="w-full"
+                                disabled={!data.rentabilidad.id}
+                                value={data.vigencia_contrato}
+                                options={vigencia_contratos.filter(
+                                    (v) =>
+                                        v.rentabilidad_id ===
+                                        data.rentabilidad.id
+                                )}
+                                optionLabel="cantidad"
+                                itemTemplate={(option) => (
+                                    <span className="text-sm">
+                                        {option?.cantidad} {option?.unidad}
+                                    </span>
+                                )}
+                                onChange={(e) =>
+                                    setData("vigencia_contrato", e.target.value)
+                                }
+                                placeholder="Seleccione"
+                            />
+                        </div>
+                        <div>
+                            <InputLabel value="Capital" id="capital" />
+
+                            <div className="p-inputgroup">
+                                <Dropdown
+                                    className="!w-5"
+                                    panelClassName="!w-5"
+                                    value={data.moneda}
+                                    options={[
+                                        {
+                                            label: "PEN",
+                                            value: "S/",
+                                        },
+                                        {
+                                            label: "USD",
+                                            value: "$",
+                                        },
+                                    ]}
+                                    /*  itemTemplate={(option) => (
+                                    <span className="text-sm">
+                                        {option.quantity}{" "}
+                                        {option.unit === "day"
+                                            ? "Días"
+                                            : "Meses"}
+                                    </span>
+                                )} */
+                                    onChange={(e) =>
+                                        setData("moneda", e.target.value)
+                                    }
+                                    placeholder="Moneda"
+                                />
+                                <InputNumber
+                                    placeholder="Capital"
+                                    onChange={(e) =>
+                                        setData(
+                                            "capital",
+                                            `${data.moneda} ${e.value}`
+                                        )
+                                    }
+                                    mode="currency"
+                                    locale={
+                                        data.moneda === "S/" ? "es-PE" : "en-US"
+                                    }
+                                    currency={
+                                        data.moneda === "S/" ? "PEN" : "USD"
+                                    }
+                                />
+                            </div>
+                        </div>
+                    </section>
+
+                    <section className="lg:grid grid-cols-4 [&_input]:w-full gap-4">
+                        <div>
+                            <InputLabel
+                                value="Fecha Inicio"
+                                id="fecha_inicio"
+                            />
+                            <InputText
+                                value={data.fecha_inicio}
+                                name="fecha_inicio"
+                                type="date"
+                                onChange={(e) =>
+                                    setData("fecha_inicio", e.target.value)
+                                }
+                            />
+                        </div>
+                        <div>
+                            <InputLabel value="Fecha Fin" id="end_type" />
+                            <InputText
+                                value={data.fecha_fin}
+                                name="fecha_fin"
+                                type="date"
+                                onChange={(e) =>
+                                    setData("fecha_fin", e.target.value)
+                                }
+                            />
+                        </div>
+                    </section>
+                </div>
+                <div
+                    className="space-y-4 bg-base-200 rounded-xl p-4 shadow"
+                    id="client_data"
+                >
+                    <h4 className="font-semibold">Datos cuenta cliente</h4>
+                    <section className="lg:grid grid-cols-4 [&_input]:w-full gap-4">
+                        <div>
+                            <InputLabel value="Banco del Cliente" htmlFor="banco_cliente" />
+                            <Dropdown
+                                inputId="banco_cliente"
+                                className="w-full"
+                                value={data.banco_cliente}
+                                filter
+                                options={bancoClienteOptions}
+                                optionValue="label"
+                                optionLabel="label"
+                                onChange={(e) =>
+                                    setData("banco_cliente", e.target.value)
+                                }
+                                placeholder="Seleccione"
+                            />
+                        </div>
+                        <div>
+                            <InputLabel value="Tipo de Cuenta" htmlFor="tipo_cuenta_cliente" />
+                            <Dropdown
+                                inputId="tipo_cuenta_cliente"
+                                disabled={!data.banco_cliente}
+                                className="w-full"
+                                value={data.tipo_cuenta_cliente}
+                                filter
+                                options={[
+                                    {
+                                        label: "Ahorro",
+                                        value: "ahorro",
+                                    },
+                                    {
+                                        label: "Corriente",
+                                        value: "corriente",
+                                    },
+                                ]}
+                                onChange={(e) =>
+                                    setData("tipo_cuenta_cliente", e.target.value)
+                                }
+                                placeholder="Seleccione"
+                            />
+                        </div>
+                        <div>
+                            <InputLabel
+                                value="Nº de Cuenta"
+                                htmlFor="numero_cuenta_cliente"
+                            />
+                            <InputText
+                                id="numero_cuenta_cliente"
+                                disabled={!data.tipo_cuenta_cliente}
+                                value={data.numero_cuenta_cliente}
+                                name="numero_cuenta_cliente"
+                                onChange={(e) =>
+                                    setData("numero_cuenta_cliente", e.target.value)
+                                }
+                                keyfilter="num"
+                            />
+                        </div>
+                        <div>
+                            <InputLabel value="Nro CCI"  htmlFor="numero_cci_cliente" />
+                            <InputText
+                                value={data.numero_cci_cliente}
+                                disabled={!data.tipo_cuenta_cliente}
+                                name="numero_cci_cliente"
+                                onChange={(e) =>
+                                    setData("numero_cci_cliente", e.target.value)
+                                }
+                                keyfilter="num"
+                            />
+                        </div>
+                    </section>
+                </div>
+                <div
+                    className="space-y-4 bg-base-200 rounded-xl p-4 shadow"
+                    id="client_data"
+                >
+                    <h4 className="font-semibold">Datos cuenta - GJG</h4>
+                    <section className="lg:grid grid-cols-4 [&_input]:w-full gap-4">
+                        <div>
+                            <InputLabel
+                                value={`Banco GJG ${
+                                    data.moneda === "S/" ? "Soles" : "Dólares"
+                                }`}
+                                id="bank"
+                            />
+                            <Dropdown
+                                className="w-full"
+                                value={data.banco_gjg}
+                                options={
+                                    data.moneda === "S/"
+                                        ? bancoGJGSolesOptions
+                                        : bancoGJGDolaresOptions
+                                }
+                                optionValue="value"
+                                optionLabel="label"
+                                onChange={(e) =>
+                                    setData("banco_gjg", e.target.value)
+                                }
+                                placeholder="Seleccione"
+                            />
+                        </div>
+                        <div>
+                            <InputLabel
+                                value={`Cuenta en ${
+                                    data.moneda === "S/" ? "Soles" : "Dólares"
+                                }`}
+                                id="apellidos"
+                            />
+                            <InputText
+                                disabled
+                                value={data.banco_gjg}
+                                name="apellidos"
                             />
                         </div>
                     </section>

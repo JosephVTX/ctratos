@@ -1,13 +1,12 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { useForm } from "@inertiajs/react";
+import { useForm, InertiaLinkProps } from "@inertiajs/react";
 import InputLabel from "@/Components/InputLabel";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
-import { Column } from "primereact/column";
-import { DataTable } from "primereact/datatable";
+
 import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
+
 import { useEffect, useState } from "react";
 import CortoPlazo from "@/Templates/Contratos/CortoPlazo";
 import { InputSwitch } from "primereact/inputswitch";
@@ -31,7 +30,7 @@ const generoOptions = [
     {
         label: "Masculino",
 
-        value: "masculini",
+        value: "masculino",
     },
 
     {
@@ -160,7 +159,7 @@ export default function Create({
             id: 0,
             nombre: "",
         },
-        distrito: 0,
+        distrito: "",
         direccion: "",
         correo: "",
         celular: "",
@@ -184,9 +183,9 @@ export default function Create({
 
         dni_anverso: "",
         dni_reverso: "",
-        declaracion_jurada: "",
-        sustento_declaracion_jurada: "",
-        comprobantes_pago: "",
+        declaracion_jurada: new File([""], "filename"),
+        sustento_declaracion_jurada: new File([""], "filename"),
+        comprobantes_pago: new File([""], "filename"),
     });
 
     useEffect(() => {
@@ -322,6 +321,7 @@ export default function Create({
                                             d.provincia_id === data.provincia.id
                                     )}
                                     optionLabel="nombre"
+                                    optionValue="nombre"
                                     onChange={(e) =>
                                         setData("distrito", e.target.value)
                                     }
@@ -469,6 +469,7 @@ export default function Create({
                                             data.rentabilidad.id
                                     )}
                                     optionLabel="cantidad"
+                                    optionValue="cantidad"
                                     itemTemplate={(option) => (
                                         <span className="text-sm">
                                             {option?.cantidad} {option?.unidad}
@@ -477,7 +478,14 @@ export default function Create({
                                     onChange={(e) =>
                                         setData(
                                             "vigencia_contrato",
-                                            e.target.value
+
+                                            `${e.target.value} ${
+                                                vigencia_contratos.find(
+                                                    (v) =>
+                                                        v.cantidad ===
+                                                        e.target.value
+                                                )?.unidad
+                                            }`
                                         )
                                     }
                                     placeholder="Seleccione"
@@ -719,12 +727,18 @@ export default function Create({
                                 />
                                 <InputText
                                     id="dni_anverso"
-                                    value={data.dni_anverso}
                                     name="dni_anverso"
-                                    onChange={(e) =>
-                                        setData("dni_anverso", e.target.value)
-                                    }
+                                    onChange={(e) => {
+                                        const objetUrl = e.target.files
+                                            ? URL.createObjectURL(
+                                                  e.target.files[0]
+                                              )
+                                            : "";
+
+                                        setData("dni_anverso", objetUrl);
+                                    }}
                                     type="file"
+                                    accept="image/jpeg,jpg,png,webp"
                                 />
                             </div>
                             <div>
@@ -734,12 +748,18 @@ export default function Create({
                                 />
                                 <InputText
                                     id="dni_reverso"
-                                    value={data.dni_reverso}
                                     name="dni_reverso"
-                                    onChange={(e) =>
-                                        setData("dni_reverso", e.target.value)
-                                    }
+                                    onChange={(e) => {
+                                        const objetUrl = e.target.files
+                                            ? URL.createObjectURL(
+                                                  e.target.files[0]
+                                              )
+                                            : "";
+
+                                        setData("dni_reverso", objetUrl);
+                                    }}
                                     type="file"
+                                    accept="image/jpeg,jpg,png,webp"
                                 />
                             </div>
                             <div>
@@ -749,15 +769,15 @@ export default function Create({
                                 />
                                 <InputText
                                     id="declaracion_jurada"
-                                    value={data.declaracion_jurada}
                                     name="declaracion_jurada"
                                     onChange={(e) =>
                                         setData(
                                             "declaracion_jurada",
-                                            e.target.value
+                                            e.target.files![0]
                                         )
                                     }
                                     type="file"
+                                    accept=".png,.jpg,.jpeg,.webp, .pdf"
                                 />
                             </div>
                             <div>
@@ -767,15 +787,15 @@ export default function Create({
                                 />
                                 <InputText
                                     id="sustento_declaracion_jurada"
-                                    value={data.sustento_declaracion_jurada}
                                     name="sustento_declaracion_jurada"
                                     onChange={(e) =>
                                         setData(
                                             "sustento_declaracion_jurada",
-                                            e.target.value
+                                            e.target.files![0]
                                         )
                                     }
                                     type="file"
+                                    accept=".png,.jpg,.jpeg,.webp, .pdf"
                                 />
                             </div>
                         </section>
@@ -787,15 +807,15 @@ export default function Create({
                                 />
                                 <InputText
                                     id="comprobantes_pago"
-                                    value={data.comprobantes_pago}
                                     name="comprobantes_pago"
                                     onChange={(e) =>
                                         setData(
                                             "comprobantes_pago",
-                                            e.target.value
+                                            e.target.files![0]
                                         )
                                     }
                                     type="file"
+                                    accept=".png,.jpg,.jpeg,.webp, .pdf"
                                 />
                             </div>
                         </section>

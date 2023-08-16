@@ -4,10 +4,16 @@ type Props = {
     children: React.ReactNode;
     logo?: boolean;
     title?: string;
+    showTitle?: boolean;
 };
-export default function Paper({ children, logo = false, title }: Props) {
+export default function Paper({
+    children,
+    logo = false,
+    title,
+    showTitle = true,
+}: Props) {
     return (
-        <div className="w-[900px] mx-auto px-20 pt-10 py-16 text-[13px] h-[1300px] text-justify space-y-6 relative overflow-hidden border bg-white">
+        <div className="w-[900px] mx-auto px-20 pt-10 py-16 text-[13px] h-[1300px] [&_span]:uppercase text-justify space-y-6 relative overflow-hidden border bg-white">
             <div
                 className={`w-[738px] -translate-x-1/2 left-1/2 absolute bottom-10 ${
                     logo ? "visible" : "invisible"
@@ -38,7 +44,9 @@ export default function Paper({ children, logo = false, title }: Props) {
                 </p>
             </div>
 
-            <h4 className="text-center font-bold">{title}</h4>
+            <h4 className={`${showTitle ? "block" : "hidden"} text-center`}>
+                {title}
+            </h4>
             {children}
         </div>
     );

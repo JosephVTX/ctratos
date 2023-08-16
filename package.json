@@ -28,7 +28,11 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "pdf-image": "^2.0.0",
+        "pdfjs-dist": "^3.9.179",
         "primeicons": "^6.0.1",
-        "primereact": "^9.6.1"
+        "primereact": "^9.6.1",
+        "react-pdf": "^7.3.3",
+        "react-pdf-to-image": "^1.0.2"
     }
 }

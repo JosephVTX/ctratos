@@ -37,4 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('dashboard/contratos', \App\Http\Controllers\Dashboard\ContratoController::class);
 });
 
+
+Route::get('/test', function () {
+    return Inertia::render('Test');
+})->name('test');
+
 require __DIR__.'/auth.php';

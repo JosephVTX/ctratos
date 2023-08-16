@@ -4,16 +4,17 @@ type Props = {
     sectionNumber: string;
     title?: string;
     children: React.ReactNode;
+    showSectionNumber?: boolean;
 };
 
-export default function SubClausula({ sectionNumber, title, children }: Props) {
+export default function SubClausula({ sectionNumber, title, children, showSectionNumber = true }: Props) {
     return (
         <section className="flex">
-            <p className="mr-4 h-full">{sectionNumber}.</p>
+            <div className={`mr-4 h-full ${showSectionNumber ? "visible": "invisible"}`}>{sectionNumber}.</div>
 
-            <p>
+            <div>
                 <b>{title}</b> {children}
-            </p>
+            </div>
         </section>
     );
 }

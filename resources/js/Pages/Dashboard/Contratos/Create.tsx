@@ -162,10 +162,7 @@ export default function Create({
         celular: "",
         genero: "",
         ocupacion: "",
-        tipo_contrato: {
-            id: 0,
-            nombre: "",
-        },
+        tipo_contrato: tipo_contratos[0],
         rentabilidad: {
             id: 0,
             porcentaje: 0,
@@ -180,6 +177,12 @@ export default function Create({
         numero_cuenta_cliente: "",
         numero_cci_cliente: "",
         banco_gjg: "",
+
+        dni_anverso: "",
+        dni_reverso: "",
+        declaracion_jurada: "",
+        sustento_declaracion_jurada: "",
+        comprobantes_pago: "",
     });
 
     console.log(data);
@@ -645,6 +648,84 @@ export default function Create({
                                 disabled
                                 value={data.banco_gjg}
                                 name="apellidos"
+                            />
+                        </div>
+                    </section>
+                </div>
+                <div
+                    className="space-y-4 bg-base-200 rounded-xl p-4 shadow"
+                    id="client_data"
+                >
+                    <h4 className="font-semibold">Archivos Adjuntos</h4>
+                    <section className="lg:grid grid-cols-2 [&_input]:w-full gap-4">
+                        <div>
+                            <InputLabel value="DNI Anverso" htmlFor="dni_anverso" />
+                            <InputText
+                                id="dni_anverso"
+                                value={data.dni_anverso}
+                                name="dni_anverso"
+                                onChange={(e) =>setData("dni_anverso", e.target.value)
+                                }
+                                type="file"
+                            />
+                        </div>
+                        <div>
+                            <InputLabel value="DNI Reverso" htmlFor="dni_reverso" />
+                            <InputText
+                                id="dni_reverso"
+                                value={data.dni_reverso}
+                                name="dni_reverso"
+                                onChange={(e) =>
+                                    setData("dni_reverso", e.target.value)
+                                }
+                                type="file"
+                            />
+                        </div>
+                        <div>
+                            <InputLabel
+                                value="Declaración Jurada"
+                                htmlFor="declaracion_jurada"
+                            />
+                            <InputText
+                                id="declaracion_jurada"
+                                value={data.declaracion_jurada}
+                                name="declaracion_jurada"
+                                onChange={(e) =>
+                                    setData("declaracion_jurada", e.target.value)
+                                }
+                                type="file"
+                            />
+                        </div>
+                        <div>
+                            <InputLabel
+                                value="Sustento Decl. Jurada"
+                                htmlFor="sustento_declaracion_jurada"
+                            />
+                            <InputText
+                                id="sustento_declaracion_jurada"
+                                value={data.sustento_declaracion_jurada}
+                                name="sustento_declaracion_jurada"
+                                onChange={(e) =>
+                                    setData("sustento_declaracion_jurada", e.target.value)
+                                }
+                                type="file"
+                            />
+                        </div>
+                    </section>
+                    <section className="grid grid-cols-2 [&_input]:w-full gap-4">
+                        <div>
+                            <InputLabel
+                                value="Comprobantes de Pago"
+                                htmlFor="comprobantes_pago"
+                            />
+                            <InputText
+                                id="comprobantes_pago"
+                                value={data.comprobantes_pago}
+                                name="comprobantes_pago"
+                                onChange={(e) =>
+                                    setData("comprobantes_pago", e.target.value)
+                                }
+                                type="file"
                             />
                         </div>
                     </section>

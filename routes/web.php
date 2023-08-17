@@ -40,6 +40,13 @@ Route::middleware(['auth'])->group(function () {
         return Inertia::render('Test');
     })->name('test');
 
+    Route::resource('dashboard', \App\Http\Controllers\Dashboard\HomeController::class)->names('dashboard');
+
+    Route::get('roles', function () {
+        return Inertia::render('Dashboard/Roles/Index', [
+            'users' => \App\Models\User::with('roles')->get(),
+        ]);
+    })->name('roles.index');
 
     Route::post('dashboard/contratos/preview', [\App\Http\Controllers\Dashboard\ContratoController::class, 'preview'])->name('contratos.preview');
 

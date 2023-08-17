@@ -15,11 +15,27 @@ class UserSeeder extends Seeder
     {
         //
 
-        User::create([
-            'name' => 'admin',
-            'username' => 'admin',
-            'email' => 'admin@gmail.com',
-            'password' => bcrypt('admin'),
-        ]);
+        $roles = [
+            'God',
+            'Tecnico',
+            'Supervisor',
+            'Usuario',
+        ];
+
+        foreach ($roles as $role) {
+
+            $user = User::create([
+                'name' => $role,
+                'username' => $role,
+                'email' => $role . '@gmail.com',
+                'password' => bcrypt('12345678'),
+                'area_id' => 1,
+                'codigo' => fake()->unique()->text(6),
+            ]);
+
+            $user->assignRole($role);
+        }
+
+        \App\Models\User::factory(20)->create();
     }
 }

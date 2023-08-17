@@ -66,23 +66,23 @@ const bancoClienteOptions = [
 
 const bancoGJGSolesOptions = [
     {
-        label: "Banco Interbank Soles",
-        value: "2003004202994",
+        nombre: "Banco Interbank Soles",
+        cuenta: "2003004202994",
     },
     {
-        label: "Banco BBVA Soles",
-        value: "001103680100051143",
+        nombre: "Banco BBVA Soles",
+        cuenta: "001103680100051143",
     },
 ];
 
 const bancoGJGDolaresOptions = [
     {
-        label: "Banco Interbank Dólares",
-        value: "2003004203000",
+        nombre: "Banco Interbank Dólares",
+        cuenta: "2003004203000",
     },
     {
-        label: "Banco BBVA Dólares",
-        value: "001103680100051151",
+        nombre: "Banco BBVA Dólares",
+        cuenta: "001103680100051151",
     },
 ];
 
@@ -183,7 +183,10 @@ export default function Create({
         tipo_cuenta_cliente: "",
         numero_cuenta_cliente: "123456789",
         numero_cci_cliente: "123456789123",
-        banco_gjg: "123456789",
+        banco_gjg: {
+            nombre: "",
+            cuenta: "",
+        },
 
         dni_anverso: new File([""], ""),
         dni_reverso: new File([""], ""),
@@ -201,9 +204,6 @@ export default function Create({
     }, [openModalPreview]);
 
     const handlePreview = () => {
-
-        console.log(data);
-        
         router.post(
             route("contratos.preview"),
             {
@@ -212,7 +212,12 @@ export default function Create({
                 provincia: data.provincia.nombre,
                 tipo_contrato: data.tipo_contrato.nombre,
 
-                rentabilidad: data.rentabilidad.porcentaje === 0 ? ""  : data.rentabilidad.porcentaje,
+                rentabilidad:
+                    data.rentabilidad.porcentaje === 0
+                        ? ""
+                        : data.rentabilidad.porcentaje,
+
+                banco_gjg: data.banco_gjg.cuenta,
             },
             {
                 preserveScroll: true,
@@ -220,14 +225,35 @@ export default function Create({
 
                 onSuccess: () => {
                     setOpenModalPreview(true);
-                }
+                },
             }
         );
     };
 
+    const handleSubmmit = () => {
+        const newData = {
+            ...data,
+            departamento: data.departamento.nombre,
+            provincia: data.provincia.nombre,
+            tipo_contrato: data.tipo_contrato.nombre,
 
-    console.log(distritos);
-    
+            rentabilidad:
+                data.rentabilidad.porcentaje === 0
+                    ? ""
+                    : data.rentabilidad.porcentaje,
+
+            numero_cuenta_gjg: data.banco_gjg.cuenta,
+            nombre_cuenta_gjg: data.banco_gjg.nombre,
+        };
+
+        console.log(newData);
+
+        router.post(route("contratos.store"), newData, {
+            preserveScroll: true,
+            forceFormData: true,
+        });
+    };
+
     return (
         <>
             <AuthenticatedLayout headTitle="Crear Contrato">
@@ -586,12 +612,10 @@ export default function Create({
                                     <InputNumber
                                         placeholder="Capital"
                                         onChange={(e) =>
-                                            setData(
-                                                "capital",
-                                                `${data.moneda} ${e.value}`
-                                            )
+                                            setData("capital", `${e.value}`)
                                         }
                                         mode="currency"
+                                        maxFractionDigits={0.0}
                                         locale={
                                             data.moneda === "S/"
                                                 ? "es-PE"
@@ -602,7 +626,7 @@ export default function Create({
                                         }
                                     />
                                 </div>
-                                    <InputError message={errors.capital} />
+                                <InputError message={errors.capital} />
                             </div>
                         </section>
 
@@ -764,10 +788,9 @@ export default function Create({
                                             ? bancoGJGSolesOptions
                                             : bancoGJGDolaresOptions
                                     }
-                                    optionValue="value"
-                                    optionLabel="label"
+                                    optionLabel="nombre"
                                     onChange={(e) =>
-                                        setData("banco_gjg", e.target.value)
+                                        setData("banco_gjg", e.value)
                                     }
                                     placeholder="Seleccione"
                                 />
@@ -784,7 +807,7 @@ export default function Create({
                                 />
                                 <InputText
                                     disabled
-                                    value={data.banco_gjg}
+                                    value={data.banco_gjg.cuenta}
                                     name="apellidos"
                                 />
                                 <InputError message={errors.banco_gjg} />
@@ -805,7 +828,12 @@ export default function Create({
                                 <InputText
                                     id="dni_anverso"
                                     name="dni_anverso"
-                                    onChange={(e) =>  setData("dni_anverso", e.target.files![0])}
+                                    onChange={(e) =>
+                                        setData(
+                                            "dni_anverso",
+                                            e.target.files![0]
+                                        )
+                                    }
                                     type="file"
                                     accept="image/jpeg,jpg,png,webp"
                                 />
@@ -819,7 +847,12 @@ export default function Create({
                                 <InputText
                                     id="dni_reverso"
                                     name="dni_reverso"
-                                    onChange={(e) => setData("dni_reverso", e.target.files![0])}
+                                    onChange={(e) =>
+                                        setData(
+                                            "dni_reverso",
+                                            e.target.files![0]
+                                        )
+                                    }
                                     type="file"
                                     accept="image/jpeg,jpg,png,webp"
                                 />
@@ -917,7 +950,7 @@ export default function Create({
                         label="Cancelar"
                     />
                     {openModalPreview ? (
-                        <Button onClick={() => {}} label="Guardar" />
+                        <Button onClick={handleSubmmit} label="Guardar" />
                     ) : (
                         <Button onClick={handlePreview} label="Previsualizar" />
                     )}

@@ -15,6 +15,9 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call([
+            RoleSeeder::class,
+            SupervisorSeeder::class,
+            AreaSeeder::class,
             UserSeeder::class,
             DepartamentoSeeder::class,
             ProvinciaSeeder::class,
@@ -23,6 +26,7 @@ class DatabaseSeeder extends Seeder
             TipoContratoSeeder::class,
             RentabilidadSeeder::class,
             VigenciaContratoSeeder::class,
+
         ]);
 
     }

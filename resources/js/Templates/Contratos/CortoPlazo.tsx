@@ -4,6 +4,8 @@ import Clausula from "./Partials/Clausula";
 import SubClausula from "./Partials/SubClausula";
 import PaperMedia from "@/Components/paper/PaperMedia";
 import { isImage } from "@/Helpers/Files";
+import { formatCurrency } from "@/Helpers/Money";
+import { numberToText } from "@/Helpers/Text";
 
 type Props = {
     logo?: boolean;
@@ -36,11 +38,36 @@ type Props = {
     declaracion_jurada: File[];
     sustento_declaracion_jurada: File[];
     comprobantes_pago: File[];
+    ocupacion: string;
+    moneda: string;
+    banco_gjg: {
+        nombre: string;
+        cuenta: string;
+    };
+    rentabilidad: {
+        porcentaje: number;
+    };
 };
+
+const cR = (capital: string, rentabilidad: number) =>
+    parseInt(capital) * (rentabilidad / 100) + parseInt(capital);
 
 const Miss = ({ title }: { title: string }) => (
     <span className="text-red-500 text-lg underline">{title}</span>
 );
+
+const formatDay = (day: string) => {
+    const f = numberToText(day);
+
+    const capilatized = f
+        .split(" ")
+        .map((word) => {
+            return word[0].toUpperCase() + word.slice(1);
+        })
+        .join(" ");
+
+    return capilatized;
+};
 
 export default function CortoPlazo(props: Props) {
     const {
@@ -69,7 +96,14 @@ export default function CortoPlazo(props: Props) {
         declaracion_jurada,
         sustento_declaracion_jurada,
         comprobantes_pago,
+        ocupacion,
+        moneda,
+        banco_gjg,
+        rentabilidad,
     } = props;
+
+    console.log(capital, "asa");
+
     return (
         <div>
             <Paper title="CONTRATO N° D19-08-1025 / 2023- GJG" logo={logo}>
@@ -85,7 +119,8 @@ export default function CortoPlazo(props: Props) {
                     44572979, con domicilio fiscal en Avenida Larco 101, Piso
                     13, Distrito de Miraflores, Provincia y Departamento de
                     Lima, quien para efectos del presente se le denominará{" "}
-                    <b>“EL INVERSOR”</b>; y de la otra parte, la señora{" "}
+                    <b>“EL INVERSOR”</b>; y de la otra parte,{" "}
+                    {genero === "masculino" ? "el señor " : "la señora "}
                     <b>
                         <span className="uppercase">
                             {nombres} {apellidos}
@@ -120,10 +155,10 @@ export default function CortoPlazo(props: Props) {
                                 : "LA INVERSIONISTA"
                         }
                     >
-                        es una persona natural, docente universitario, por el
-                        cual percibe una contraprestación, que acumulada en el
-                        tiempo constituye el monto de lo que pretende invertir
-                        en el presente contrato, declarando bajo juramento la
+                        es una persona natural, {ocupacion}, por el cual percibe
+                        una contraprestación, que acumulada en el tiempo
+                        constituye el monto de lo que pretende invertir en el
+                        presente contrato, declarando bajo juramento la
                         procedencia lícita de dicho fondo, tal como consta en la
                         declaración jurada que forma parte integrante del
                         presente contrato.
@@ -162,16 +197,20 @@ export default function CortoPlazo(props: Props) {
                         </b>{" "}
                         aporta al financiamiento de los proyectos de inversión
                         que ejecutará <b>EL INVERSOR</b> con un monto ascendente
-                        a la suma de {capital}( Cinco Mil Con 00/100 soles), la
-                        cual fue depositada en la cuenta {tipo_cuenta_cliente}{" "}
-                        N.º {numero_cuenta_cliente} del {banco_cliente}.
+                        a la suma de {formatCurrency(capital, moneda === "$")},
+                        la cual fue depositada en la cuenta{" "}
+                        {tipo_cuenta_cliente} N.º {banco_gjg.cuenta} del{" "}
+                        {banco_gjg.nombre}.
                     </SubClausula>
                     <SubClausula sectionNumber="3.2">
                         Como contraprestación del financiamiento que
                         voluntariamente realiza <b>EL INVERSIONISTA,</b>{" "}
-                        <b>EL INVERSOR</b> entregará el monto de S/ 5,750.00
-                        (Cinco Mil Setecientos Cincuenta Con 00/100 soles) cuyo
-                        monto total será depositado en la cuenta{" "}
+                        <b>EL INVERSOR</b> entregará el monto de{" "}
+                        {formatCurrency(
+                            `${cR(capital, rentabilidad.porcentaje)}`,
+                            moneda === "$"
+                        )}{" "}
+                        cuyo monto total será depositado en la cuenta{" "}
                         {tipo_cuenta_cliente} N°
                         {numero_cuenta_cliente} / CCI: {numero_cci_cliente} a
                         nombre el señor{" "}
@@ -188,11 +227,11 @@ export default function CortoPlazo(props: Props) {
                         {fecha_inicio} y culminará el {fecha_fin}.
                     </SubClausula>
                     <SubClausula sectionNumber="4.2">
-                        EL INVERSOR tendrá un plazo máximo de Cuarenta Y Cinco
-                        (45) días hábiles contados a partir del día hábil
-                        siguiente de la fecha inicio pactada en el 4.1, para
-                        devolver el monto invertido más la rentabilidad ofrecida
-                        a favor de{" "}
+                        EL INVERSOR tendrá un plazo máximo de{" "}
+                        {numberToText(vigencia_contrato)} ({vigencia_contrato}){" "}
+                        días hábiles contados a partir del día hábil siguiente
+                        de la fecha inicio pactada en el 4.1, para devolver el
+                        monto invertido más la rentabilidad ofrecida a favor de{" "}
                         <b>
                             {genero === "masculino"
                                 ? "EL INVERSIONISTA"
@@ -204,7 +243,7 @@ export default function CortoPlazo(props: Props) {
             </Paper>
             <Paper
                 showTitle={false}
-                title="CONTRATO N° D19-08-1025 / 2023- GJG"
+                
                 logo={logo}
             >
                 <Clausula
@@ -317,7 +356,7 @@ export default function CortoPlazo(props: Props) {
                         inversión por día hábil, este numeral no resulta
                         aplicable en caso EL INVERSOR resuelva el contrato de
                         manera unilateral, tal y como está detallado en el
-                        numeral 8.3..
+                        numeral 8.3.
                     </SubClausula>
                     <SubClausula sectionNumber="7.3">
                         En caso de producirse eventos de caso fortuito o fuerza
@@ -373,7 +412,7 @@ export default function CortoPlazo(props: Props) {
                         invertido así como cancelar la rentabilidad pactada.
                         Para el proceso de la resolución unilateral descrita en
                         el párrafo que antecede, EL INVERSOR notificará de este
-                        hecho mediante correo electrónico a EL INVERSIONISTA,
+                        hecho mediante correo electrónico a <b>{genero === "masculino" ? "EL INVERSIONISTA" : "LA INVERSIONISTA"}</b>,
                         teniendo un plazo no mayor de 03(tres) días hábiles de
                         enviado el correo electrónico para realizar el depósito
                         del íntegro del dinero que corresponda, en caso no se
@@ -521,9 +560,7 @@ export default function CortoPlazo(props: Props) {
                 </section>
             </Paper>
 
-            <Paper logo={logo}>
-                x
-            </Paper>
+            <Paper logo={logo}>x</Paper>
 
             {declaracion_jurada.map((file, index) => (
                 <PaperMedia

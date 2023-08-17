@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Contrato\PreviewRequest;
 use App\Http\Requests\Contrato\StoreRequest;
+use App\Models\Contrato;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -38,6 +39,14 @@ class ContratoController extends Controller
             'rentabilidades' => \App\Models\Rentabilidad::all(),
             'vigencia_contratos' => \App\Models\VigenciaContrato::all(),
         ]);
+    }
+
+    public function store(StoreRequest $request)
+    {
+
+        dd($request->all());
+
+        
     }
 
     public function preview(PreviewRequest $request)

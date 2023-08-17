@@ -28,12 +28,16 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "i18n-locales": "^0.0.5",
         "laravel-precognition-react-inertia": "^0.4.1",
+        "numero-a-letras": "^1.0.6",
         "pdf-image": "^2.0.0",
         "pdfjs-dist": "^3.9.179",
         "primeicons": "^6.0.1",
         "primereact": "^9.6.1",
         "react-pdf": "^7.3.3",
-        "react-pdf-to-image": "^1.0.2"
+        "react-pdf-to-image": "^1.0.2",
+        "to-words": "^3.6.1",
+        "written-number": "^0.11.1"
     }
 }

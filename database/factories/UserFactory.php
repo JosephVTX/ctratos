@@ -20,8 +20,13 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
+            'username' => fake()->unique()->userName(),
+
+            
+            'codigo' => $this->faker->unique()->text(8),
+            'area_id' => $this->faker->randomElement(\App\Models\Area::pluck('id')),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => bcrypt('12345678'), // password
             'remember_token' => Str::random(10),
         ];
     }
@@ -35,4 +40,15 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    /**
+     * Indicate that the user is an admin.
+     */
+
+     public function configure(): static
+     {
+         return $this->afterCreating(function (\App\Models\User $user) {
+             $user->assignRole($this->faker->randomElement(['God', 'Tecnico', 'Supervisor', 'Usuario']));
+         });
+     }
 }

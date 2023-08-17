@@ -33,8 +33,8 @@ export const InputAuth = ({
 
 export default function Login() {
     const { data, setData, post, processing, errors, reset } = useForm({
-        username: "admin",
-        password: "admin",
+        username: "God",
+        password: "12345678",
     });
 
     useEffect(() => {

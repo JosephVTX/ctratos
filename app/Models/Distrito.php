@@ -11,11 +11,20 @@ class Distrito extends Model
 
     protected $fillable = [
         'nombre',
-        'provincia_id'
+        'provincia_id',
+        'departamento_id'
     ];
+
+    protected $keyType = 'string';
 
     public function provincia()
     {
         return $this->belongsTo(Provincia::class);
     }
+
+    public function departamento()
+    {
+        return $this->belongsTo(Departamento::class);
+    }
+    
 }

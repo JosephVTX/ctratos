@@ -28,6 +28,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "laravel-precognition-react-inertia": "^0.4.1",
         "pdf-image": "^2.0.0",
         "pdfjs-dist": "^3.9.179",
         "primeicons": "^6.0.1",

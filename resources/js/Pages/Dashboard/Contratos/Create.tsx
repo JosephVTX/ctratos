@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { useForm, InertiaLinkProps } from "@inertiajs/react";
+import { useForm, InertiaLinkProps, router, usePage } from "@inertiajs/react";
 import InputLabel from "@/Components/InputLabel";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
@@ -10,6 +10,7 @@ import { Button } from "primereact/button";
 import { useEffect, useState } from "react";
 import CortoPlazo from "@/Templates/Contratos/CortoPlazo";
 import { InputSwitch } from "primereact/inputswitch";
+import InputError from "@/Components/InputError";
 
 const typeDocumentOptions = [
     {
@@ -146,11 +147,14 @@ export default function Create({
 }: Props) {
     const [openModalPreview, setOpenModalPreview] = useState(false);
     const [withLogo, setWithLogo] = useState(false);
+
+    const { errors } = usePage().props;
+
     const { data, setData } = useForm({
-        nombres: "",
-        apellidos: "",
-        tipo_doc: "",
-        numero_doc: "",
+        nombres: "Joseph Williams",
+        apellidos: "Vega Callupe",
+        tipo_doc: "dni",
+        numero_doc: "76553808",
         departamento: {
             id: 0,
             nombre: "",
@@ -160,11 +164,11 @@ export default function Create({
             nombre: "",
         },
         distrito: "",
-        direccion: "",
-        correo: "",
-        celular: "",
-        genero: "",
-        ocupacion: "",
+        direccion: "Los Olivos",
+        correo: "joseph@gmail.com",
+        celular: "927834271",
+        genero: "masculino",
+        ocupacion: "Estudio y Dota 2",
         tipo_contrato: tipo_contratos[0],
         rentabilidad: {
             id: 0,
@@ -177,12 +181,12 @@ export default function Create({
         fecha_fin: "",
         banco_cliente: "",
         tipo_cuenta_cliente: "",
-        numero_cuenta_cliente: "",
-        numero_cci_cliente: "",
-        banco_gjg: "",
+        numero_cuenta_cliente: "123456789",
+        numero_cci_cliente: "123456789123",
+        banco_gjg: "123456789",
 
-        dni_anverso: "",
-        dni_reverso: "",
+        dni_anverso: new File([""], ""),
+        dni_reverso: new File([""], ""),
         declaracion_jurada: [new File([""], "")],
         sustento_declaracion_jurada: [new File([""], "")],
         comprobantes_pago: [new File([""], "")],
@@ -196,10 +200,38 @@ export default function Create({
         }
     }, [openModalPreview]);
 
+    const handlePreview = () => {
+
+        console.log(data);
+        
+        router.post(
+            route("contratos.preview"),
+            {
+                ...data,
+                departamento: data.departamento.nombre,
+                provincia: data.provincia.nombre,
+                tipo_contrato: data.tipo_contrato.nombre,
+
+                rentabilidad: data.rentabilidad.porcentaje === 0 ? ""  : data.rentabilidad.porcentaje,
+            },
+            {
+                preserveScroll: true,
+                forceFormData: true,
+
+                onSuccess: () => {
+                    setOpenModalPreview(true);
+                }
+            }
+        );
+    };
+
+
+    console.log(distritos);
+    
     return (
         <>
             <AuthenticatedLayout headTitle="Crear Contrato">
-                <form className="space-y-8 pb-8">
+                <div className="space-y-8 pb-8">
                     <div
                         className="space-y-4 bg-base-200 rounded-xl p-4 shadow"
                         id="client_data"
@@ -217,6 +249,7 @@ export default function Create({
                                     }
                                     keyfilter={/^[a-zA-Z\s]*$/}
                                 />
+                                <InputError message={errors.nombres} />
                             </div>
                             <div>
                                 <InputLabel
@@ -232,6 +265,8 @@ export default function Create({
                                     }
                                     keyfilter={/^[a-zA-Z\s]*$/}
                                 />
+
+                                <InputError message={errors.apellidos} />
                             </div>
                             <div>
                                 <InputLabel
@@ -249,8 +284,8 @@ export default function Create({
                                         setData("tipo_doc", e.target.value)
                                     }
                                     placeholder="Seleccione"
-                                    
                                 />
+                                <InputError message={errors.tipo_doc} />
                             </div>
                             <div>
                                 <InputLabel
@@ -265,9 +300,16 @@ export default function Create({
                                         setData("numero_doc", e.target.value)
                                     }
                                     keyfilter={"int"}
-
-                                    maxLength={ data.tipo_doc === "dni" ? 8 : data.tipo_doc === "ce" ? 15 : 12}
+                                    maxLength={
+                                        data.tipo_doc === "dni"
+                                            ? 8
+                                            : data.tipo_doc === "ce"
+                                            ? 15
+                                            : 12
+                                    }
                                 />
+
+                                <InputError message={errors.numero_doc} />
                             </div>
                         </section>
                         <section className="lg:grid grid-cols-4 [&_input]:w-full gap-4">
@@ -288,6 +330,7 @@ export default function Create({
                                     }
                                     placeholder="Seleccione"
                                 />
+                                <InputError message={errors.departamento} />
                             </div>
                             <div>
                                 <InputLabel
@@ -311,6 +354,7 @@ export default function Create({
                                     }
                                     placeholder="Seleccione"
                                 />
+                                <InputError message={errors.provincia} />
                             </div>
                             <div>
                                 <InputLabel
@@ -333,6 +377,7 @@ export default function Create({
                                     }
                                     placeholder="Seleccione"
                                 />
+                                <InputError message={errors.distrito} />
                             </div>
                             <div>
                                 <InputLabel
@@ -347,6 +392,8 @@ export default function Create({
                                         setData("direccion", e.target.value)
                                     }
                                 />
+
+                                <InputError message={errors.direccion} />
                             </div>
                         </section>
 
@@ -361,6 +408,7 @@ export default function Create({
                                         setData("correo", e.target.value)
                                     }
                                 />
+                                <InputError message={errors.correo} />
                             </div>
                             <div>
                                 <InputLabel value="Celular" htmlFor="celular" />
@@ -372,6 +420,7 @@ export default function Create({
                                         setData("celular", e.target.value)
                                     }
                                 />
+                                <InputError message={errors.celular} />
                             </div>
                             <div>
                                 <InputLabel
@@ -390,6 +439,7 @@ export default function Create({
                                     }
                                     placeholder="Seleccione"
                                 />
+                                <InputError message={errors.genero} />
                             </div>
                             <div>
                                 <InputLabel
@@ -404,6 +454,7 @@ export default function Create({
                                         setData("ocupacion", e.target.value)
                                     }
                                 />
+                                <InputError message={errors.ocupacion} />
                             </div>
                         </section>
                     </div>
@@ -429,6 +480,7 @@ export default function Create({
                                     }
                                     placeholder="Seleccione"
                                 />
+                                <InputError message={errors.tipo_contrato} />
                             </div>
                             <div>
                                 <InputLabel value="% de Renta" id="profit" />
@@ -444,16 +496,15 @@ export default function Create({
                                     optionLabel="percent"
                                     filter
                                     valueTemplate={(o, props) => {
-
-
-                                        if(o) {
-
-                                            return <span className="text-sm">
-                                            {o?.porcentaje} %
-                                        </span>
+                                        if (o) {
+                                            return (
+                                                <span className="text-sm">
+                                                    {o?.porcentaje} %
+                                                </span>
+                                            );
                                         }
 
-                                        return props?.placeholder
+                                        return props?.placeholder;
                                     }}
                                     itemTemplate={(o) => (
                                         <span className="text-sm">
@@ -465,6 +516,7 @@ export default function Create({
                                     }
                                     placeholder="Seleccione"
                                 />
+                                <InputError message={errors.rentabilidad} />
                             </div>
                             <div>
                                 <InputLabel
@@ -488,23 +540,24 @@ export default function Create({
                                             {option?.cantidad} {option?.unidad}
                                         </span>
                                     )}
-
                                     valueTemplate={(o, props) => {
-
-                                        if(o) {
-
-                                            return <span className="text-sm">
-                                            {o?.cantidad} {o?.unidad}
-                                        </span>
+                                        if (o) {
+                                            return (
+                                                <span className="text-sm">
+                                                    {o?.cantidad} {o?.unidad}
+                                                </span>
+                                            );
                                         }
 
-                                        return props?.placeholder
+                                        return props?.placeholder;
                                     }}
                                     onChange={(e) =>
-                                        setData(
-                                            "vigencia_contrato", e.value)
+                                        setData("vigencia_contrato", e.value)
                                     }
                                     placeholder="Seleccione"
+                                />
+                                <InputError
+                                    message={errors.vigencia_contrato}
                                 />
                             </div>
                             <div>
@@ -525,14 +578,6 @@ export default function Create({
                                                 value: "$",
                                             },
                                         ]}
-                                        /*  itemTemplate={(option) => (
-                                    <span className="text-sm">
-                                        {option.quantity}{" "}
-                                        {option.unit === "day"
-                                            ? "Días"
-                                            : "Meses"}
-                                    </span>
-                                )} */
                                         onChange={(e) =>
                                             setData("moneda", e.target.value)
                                         }
@@ -557,6 +602,7 @@ export default function Create({
                                         }
                                     />
                                 </div>
+                                    <InputError message={errors.capital} />
                             </div>
                         </section>
 
@@ -574,6 +620,8 @@ export default function Create({
                                         setData("fecha_inicio", e.target.value)
                                     }
                                 />
+
+                                <InputError message={errors.fecha_inicio} />
                             </div>
                             <div>
                                 <InputLabel value="Fecha Fin" id="end_type" />
@@ -585,6 +633,7 @@ export default function Create({
                                         setData("fecha_fin", e.target.value)
                                     }
                                 />
+                                <InputError message={errors.fecha_fin} />
                             </div>
                         </section>
                     </div>
@@ -612,6 +661,7 @@ export default function Create({
                                     }
                                     placeholder="Seleccione"
                                 />
+                                <InputError message={errors.banco_cliente} />
                             </div>
                             <div>
                                 <InputLabel
@@ -642,6 +692,9 @@ export default function Create({
                                     }
                                     placeholder="Seleccione"
                                 />
+                                <InputError
+                                    message={errors.tipo_cuenta_cliente}
+                                />
                             </div>
                             <div>
                                 <InputLabel
@@ -661,6 +714,9 @@ export default function Create({
                                     }
                                     keyfilter="num"
                                 />
+                                <InputError
+                                    message={errors.numero_cuenta_cliente}
+                                />
                             </div>
                             <div>
                                 <InputLabel
@@ -678,6 +734,9 @@ export default function Create({
                                         )
                                     }
                                     keyfilter="num"
+                                />
+                                <InputError
+                                    message={errors.numero_cci_cliente}
                                 />
                             </div>
                         </section>
@@ -712,6 +771,7 @@ export default function Create({
                                     }
                                     placeholder="Seleccione"
                                 />
+                                <InputError message={errors.banco_gjg} />
                             </div>
                             <div>
                                 <InputLabel
@@ -727,6 +787,7 @@ export default function Create({
                                     value={data.banco_gjg}
                                     name="apellidos"
                                 />
+                                <InputError message={errors.banco_gjg} />
                             </div>
                         </section>
                     </div>
@@ -744,18 +805,11 @@ export default function Create({
                                 <InputText
                                     id="dni_anverso"
                                     name="dni_anverso"
-                                    onChange={(e) => {
-                                        const objetUrl = e.target.files
-                                            ? URL.createObjectURL(
-                                                  e.target.files[0]
-                                              )
-                                            : "";
-
-                                        setData("dni_anverso", objetUrl);
-                                    }}
+                                    onChange={(e) =>  setData("dni_anverso", e.target.files![0])}
                                     type="file"
                                     accept="image/jpeg,jpg,png,webp"
                                 />
+                                <InputError message={errors.dni_anverso} />
                             </div>
                             <div>
                                 <InputLabel
@@ -765,18 +819,11 @@ export default function Create({
                                 <InputText
                                     id="dni_reverso"
                                     name="dni_reverso"
-                                    onChange={(e) => {
-                                        const objetUrl = e.target.files
-                                            ? URL.createObjectURL(
-                                                  e.target.files[0]
-                                              )
-                                            : "";
-
-                                        setData("dni_reverso", objetUrl);
-                                    }}
+                                    onChange={(e) => setData("dni_reverso", e.target.files![0])}
                                     type="file"
                                     accept="image/jpeg,jpg,png,webp"
                                 />
+                                <InputError message={errors.dni_reverso} />
                             </div>
                             <div>
                                 <InputLabel
@@ -795,6 +842,9 @@ export default function Create({
                                     accept=".png,.jpg,.jpeg,.webp, .pdf"
                                     multiple
                                 />
+                                <InputError
+                                    message={errors.declaracion_jurada}
+                                />
                             </div>
                             <div>
                                 <InputLabel
@@ -812,6 +862,9 @@ export default function Create({
                                     type="file"
                                     accept=".png,.jpg,.jpeg,.webp, .pdf"
                                     multiple
+                                />
+                                <InputError
+                                    message={errors.sustento_declaracion_jurada}
                                 />
                             </div>
                         </section>
@@ -833,10 +886,13 @@ export default function Create({
                                     accept=".png,.jpg,.jpeg,.webp, .pdf"
                                     multiple
                                 />
+                                <InputError
+                                    message={errors.comprobantes_pago}
+                                />
                             </div>
                         </section>
                     </div>
-                </form>
+                </div>
             </AuthenticatedLayout>
 
             {openModalPreview && (
@@ -863,10 +919,7 @@ export default function Create({
                     {openModalPreview ? (
                         <Button onClick={() => {}} label="Guardar" />
                     ) : (
-                        <Button
-                            onClick={() => setOpenModalPreview(true)}
-                            label="Previsualizar"
-                        />
+                        <Button onClick={handlePreview} label="Previsualizar" />
                     )}
                 </section>
             </div>

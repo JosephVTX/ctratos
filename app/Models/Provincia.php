@@ -14,6 +14,8 @@ class Provincia extends Model
         'departamento_id',
     ];
 
+    protected $keyType = 'string';
+
     public function departamento()
     {
         return $this->belongsTo(Departamento::class);

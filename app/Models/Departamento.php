@@ -13,10 +13,15 @@ class Departamento extends Model
         'nombre'
     ];
 
-    //1 Departamento pertenece a varias provincias
+    protected $keyType = 'string';
 
     public function provincias()
     {
         return $this->hasMany(Provincia::class);
+    }
+
+    public function distritos()
+    {
+        return $this->hasManyThrough(Distrito::class, Provincia::class);
     }
 }

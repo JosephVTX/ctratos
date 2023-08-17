@@ -1,21 +1,31 @@
-import React from "react";
-import { FileUpload } from "primereact/fileupload";
+import { InputText } from "primereact/inputtext";
+import InputError from "@/Components/InputError";
+import { useForm } from "laravel-precognition-react-inertia";
 
 export default function Test() {
+    const form = useForm("post", route("contratos.preview"), {
+        nombres: "",
+    });
+
+    console.log(form.errors);
+
+    const submit = (e: any) => {
+        e.preventDefault();
+        form.submit();
+    };
     return (
-        <div className="card">
-            <FileUpload
-                name="demo[]"
-                
-                multiple
-                accept="image/*"
-                maxFileSize={1000000}
-                emptyTemplate={
-                    <p className="m-0">
-                        Drag and drop files to here to upload.
-                    </p>
-                }
-            />
-        </div>
+        <form onSubmit={submit}>
+            <div>
+                <InputText
+                    onChange={(e) => form.setData("nombres", e.target.value)}
+                    placeholder="Nombre"
+                    onBlur={() => form.validate('nombres')}
+                />
+
+                {form.invalid("nombres") && <div>{form.errors.nombres}</div>}
+
+                <button>fadas</button>
+            </div>
+        </form>
     );
 }

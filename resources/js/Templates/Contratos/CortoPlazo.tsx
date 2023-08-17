@@ -31,8 +31,8 @@ type Props = {
     fecha_fin: string;
     correo: string;
     celular: string;
-    dni_anverso: string;
-    dni_reverso: string;
+    dni_anverso: File;
+    dni_reverso: File;
     declaracion_jurada: File[];
     sustento_declaracion_jurada: File[];
     comprobantes_pago: File[];
@@ -522,8 +522,7 @@ export default function CortoPlazo(props: Props) {
             </Paper>
 
             <Paper logo={logo}>
-                <img src={dni_anverso} alt="" />
-                <img src={dni_reverso} alt="" />
+                x
             </Paper>
 
             {declaracion_jurada.map((file, index) => (

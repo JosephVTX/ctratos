@@ -20,6 +20,8 @@ namespace App\Models{
  * @property int $supervisor_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Contrato> $contratos
+ * @property-read int|null $contratos_count
  * @property-read \App\Models\Supervisor $supervisor
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
@@ -109,24 +111,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Contract
- *
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\ContractFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Contract newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Contract newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Contract query()
- * @method static \Illuminate\Database\Eloquent\Builder|Contract whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contract whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contract whereUpdatedAt($value)
- */
-	class Contract extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
  * App\Models\ContractType
  *
  * @property int $id
@@ -176,9 +160,80 @@ namespace App\Models{
 /**
  * App\Models\Contrato
  *
+ * @property int $id
+ * @property int $user_id
+ * @property int $area_id
+ * @property string $nombres
+ * @property string $apellidos
+ * @property string $tipo_doc
+ * @property string $numero_doc
+ * @property array $departamento
+ * @property array $provincia
+ * @property string $distrito
+ * @property string $direccion
+ * @property string $correo
+ * @property string $celular
+ * @property string $genero
+ * @property string $ocupacion
+ * @property string $tipo_contrato
+ * @property array $rentabilidad
+ * @property array $vigencia_contrato
+ * @property string $moneda
+ * @property string $capital
+ * @property string $fecha_inicio
+ * @property string $fecha_fin
+ * @property string $banco_cliente
+ * @property string $tipo_cuenta_cliente
+ * @property string $numero_cuenta_cliente
+ * @property string $numero_cci_cliente
+ * @property string $dni_anverso
+ * @property string $dni_reverso
+ * @property array $banco_gjg
+ * @property array $declaracion_jurada
+ * @property array $sustento_declaracion_jurada
+ * @property array $comprobantes_pago
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Area $area
+ * @property-read \App\Models\User $user
+ * @method static \Database\Factories\ContratoFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereApellidos($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereAreaId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereBancoCliente($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereBancoGjg($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereCapital($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereCelular($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereComprobantesPago($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereCorreo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereDeclaracionJurada($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereDepartamento($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereDireccion($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereDistrito($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereDniAnverso($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereDniReverso($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereFechaFin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereFechaInicio($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereGenero($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereMoneda($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereNombres($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereNumeroCciCliente($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereNumeroCuentaCliente($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereNumeroDoc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereOcupacion($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereProvincia($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereRentabilidad($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereSustentoDeclaracionJurada($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereTipoContrato($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereTipoCuentaCliente($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereTipoDoc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereVigenciaContrato($value)
  */
 	class Contrato extends \Eloquent {}
 }
@@ -385,6 +440,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Area|null $area
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Contrato> $contratos
+ * @property-read int|null $contratos_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions

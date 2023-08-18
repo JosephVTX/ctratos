@@ -74,4 +74,9 @@ class User extends Authenticatable
             return [];
         }
     }
+
+    public function contratos()
+    {
+        return $this->hasMany(Contrato::class);
+    }
 }

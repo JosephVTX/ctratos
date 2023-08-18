@@ -1,13 +1,11 @@
 import Paper from "@/Components/paper/Paper";
-import React from "react";
-import Clausula from "./Partials/Clausula";
-import SubClausula from "./Partials/SubClausula";
 import PaperMedia from "@/Components/paper/PaperMedia";
-import { isImage } from "@/Helpers/Files";
 import { formatCurrency } from "@/Helpers/Money";
 import { numberToText } from "@/Helpers/Text";
+import SubClausula from "../Partials/SubClausula";
+import Clausula from "../Partials/Clausula";
 
-type Props = {
+export type Props = {
     logo?: boolean;
     nombres: string;
     apellidos: string;
@@ -36,11 +34,11 @@ type Props = {
     fecha_fin: string;
     correo: string;
     celular: string;
-    dni_anverso: File;
-    dni_reverso: File;
-    declaracion_jurada: File[];
-    sustento_declaracion_jurada: File[];
-    comprobantes_pago: File[];
+    dni_anverso: string;
+    dni_reverso: string;
+    declaracion_jurada: string[];
+    sustento_declaracion_jurada: string[];
+    comprobantes_pago: string[];
     ocupacion: string;
     moneda: string;
     banco_gjg: {
@@ -105,10 +103,8 @@ export default function CortoPlazo(props: Props) {
         rentabilidad,
     } = props;
 
-    console.log(capital, "asa");
-
     return (
-        <div>
+        <div className="space-y-4">
             <Paper title="CONTRATO N° D19-08-1025 / 2023- GJG" logo={logo}>
                 <p>
                     Conste por el presente documento, el Contrato de Inversión
@@ -566,34 +562,22 @@ export default function CortoPlazo(props: Props) {
                 </section>
             </Paper>
 
-            <Paper logo={logo}>x</Paper>
+            <Paper logo={logo}>
+                <img src={dni_anverso} alt="" />
+                <img src={dni_reverso} alt="" />
+            </Paper>
 
-            {/* {declaracion_jurada.map((file, index) => (
-                <PaperMedia
-                    isImage={isImage(file)}
-                    logo={logo}
-                    file={file}
-                    key={index}
-                />
+            {declaracion_jurada.map((url, index) => (
+                <PaperMedia isImage logo={logo} url={url} key={index} />
             ))}
 
-            {sustento_declaracion_jurada.map((file, index) => (
-                <PaperMedia
-                    isImage={isImage(file)}
-                    logo={logo}
-                    file={file}
-                    key={index}
-                />
+            {sustento_declaracion_jurada.map((url, index) => (
+                <PaperMedia isImage logo={logo} url={url} key={index} />
             ))}
 
-            {comprobantes_pago.map((file, index) => (
-                <PaperMedia
-                    isImage={isImage(file)}
-                    logo={logo}
-                    file={file}
-                    key={index}
-                />
-            ))} */}
+            {comprobantes_pago.map((url, index) => (
+                <PaperMedia isImage logo={logo} url={url} key={index} />
+            ))}
         </div>
     );
 }

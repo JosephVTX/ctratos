@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             TipoContratoSeeder::class,
             RentabilidadSeeder::class,
             VigenciaContratoSeeder::class,
+            ContratoSeeder::class,
 
         ]);
 

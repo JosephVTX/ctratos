@@ -40,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
         return Inertia::render('Test');
     })->name('test');
 
-    Route::resource('dashboard', \App\Http\Controllers\Dashboard\HomeController::class)->names('dashboard');
+    /* Route::get('dashboard', [\App\Http\Controllers\Dashboard\HomeController::class, 'index'])->names('dashboard'); */
 
     Route::get('roles', function () {
         return Inertia::render('Dashboard/Roles/Index', [
@@ -50,7 +50,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('dashboard/contratos/preview', [\App\Http\Controllers\Dashboard\ContratoController::class, 'preview'])->name('contratos.preview');
 
-    Route::resource('dashboard/contratos', \App\Http\Controllers\Dashboard\ContratoController::class)->names('contratos');
+    Route::resource('dashboard/contratos', \App\Http\Controllers\Dashboard\ContratoController::class)->names('dashboard.contratos');
 });
 
 

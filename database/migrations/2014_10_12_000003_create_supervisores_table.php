@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('supervisores', function (Blueprint $table) {
             $table->id();
 
-            $table->string('nombre');
-            $table->string('apellido');
-            $table->string('documento');
-            $table->string('telefono');
-            $table->string('correo');
+            $table->string('nombre', 64);
+            $table->string('apellido', 64);
+            $table->string('documento',16);
+            $table->string('telefono', 16);
+            $table->string('correo', 128);
             $table->timestamps();
         });
     }

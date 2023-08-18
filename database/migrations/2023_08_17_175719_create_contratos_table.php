@@ -9,40 +9,46 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
+
     public function up(): void
     {
+
+
+
         Schema::create('contratos', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombres');
-            $table->string('apellidos');
-            $table->string('tipo_doc');
-            $table->string('numero_doc');
-            $table->string('departamento');
-            $table->string('provincia');
-            $table->string('distrito');
-            $table->string('direccion');
-            $table->string('correo');
-            $table->string('celular');
-            $table->string('genero');
-            $table->string('ocupacion');
-            $table->string('tipo_contrato');
-            $table->string('rentabilidad');
-            $table->string('vigencia_contrato');
-            $table->string('moneda');
-            $table->string('capital');
-            $table->string('fecha_inicio');
-            $table->string('fecha_fin');
-            $table->string('banco_cliente');
-            $table->string('tipo_cuenta_cliente');
-            $table->string('numero_cuenta_cliente');
-            $table->string('numero_cci_cliente');
-            $table->string('numero_cuenta_gjg');
-            $table->string('nombre_cuenta_gjg');
+            $table->id()->from(1000);
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('area_id')->constrained();
+            $table->string('nombres', 64);
+            $table->string('apellidos', 64);
+            $table->string('tipo_doc', 8);
+            $table->string('numero_doc', 16);
+            $table->json('departamento', 32);
+            $table->json('provincia', 64);
+            $table->string('distrito', 64);
+            $table->string('direccion', 128);
+            $table->string('correo', 128);
+            $table->string('celular', 12);
+            $table->string('genero', 16);
+            $table->string('ocupacion', 128);
+            $table->string('tipo_contrato', 32);
+            $table->json('rentabilidad');
+            $table->json('vigencia_contrato');
+            $table->string('moneda', 16);
+            $table->string('capital', 16);
+            $table->string('fecha_inicio', 16);
+            $table->string('fecha_fin', 16);
+            $table->string('banco_cliente', 32);
+            $table->string('tipo_cuenta_cliente', 32);
+            $table->string('numero_cuenta_cliente', 32);
+            $table->string('numero_cci_cliente', 32);
             $table->string('dni_anverso');
             $table->string('dni_reverso');
-            $table->string('declaracion_jurada');
-            $table->string('sustento_declaracion_jurada');
-            $table->string('comprobantes_pago');
+            $table->json('banco_gjg');
+            $table->json('declaracion_jurada');
+            $table->json('sustento_declaracion_jurada');
+            $table->json('comprobantes_pago');
 
             $table->timestamps();
         });

@@ -6,22 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Contrato\PreviewRequest;
 use App\Http\Requests\Contrato\StoreRequest;
 use App\Models\Contrato;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class ContratoController extends Controller
 {
-    //
+    // 
+    private $contratos;
+
+    public function __construct(Contrato $contratos)
+    {
+        $this->contratos = $contratos;
+    }
 
     public function index()
     {
-        //
 
-        return inertia('Dashboard/Contractos/Index', [
+        return inertia('Dashboard/Contratos/Index', [
 
-            'departamentos' => \App\Models\Departamento::all(),
-            'provincias' => \App\Models\Provincia::all(),
-            'distritos' => \App\Models\Distrito::all(),
+            'contratos' => $this->contratos->getContratos()
         ]);
     }
 
@@ -45,14 +46,23 @@ class ContratoController extends Controller
     {
 
         dd($request->all());
-
-        
     }
 
     public function preview(PreviewRequest $request)
     {
 
 
-        return to_route("contratos.create");
+        return to_route("dashboard.contratos.create");
+    }
+
+    public function show(Contrato $contrato)
+    {
+
+
+
+        return inertia('Dashboard/Contratos/Show', [
+
+            'contrato' => $contrato,
+        ]);
     }
 }

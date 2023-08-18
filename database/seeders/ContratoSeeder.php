@@ -13,5 +13,7 @@ class ContratoSeeder extends Seeder
     public function run(): void
     {
         //
+
+        \App\Models\Contrato::factory()->count(5000)->create();
     }
 }

@@ -560,7 +560,7 @@ export default function Create({
                                             data.rentabilidad.id
                                     )}
                                     optionLabel="cantidad"
-                                    optionValue="cantidad"
+                                  
                                     itemTemplate={(option) => (
                                         <span className="text-sm">
                                             {option?.cantidad} {option?.unidad}
@@ -944,15 +944,31 @@ export default function Create({
                     </div>
                 </section>
                 <section className="space-x-4">
-                    <Button
-                        onClick={() => setOpenModalPreview(false)}
-                        severity="secondary"
-                        label="Cancelar"
-                    />
                     {openModalPreview ? (
-                        <Button onClick={handleSubmmit} label="Guardar" />
+                        <>
+                            <Button
+                                onClick={() => setOpenModalPreview(false)}
+                                severity="secondary"
+                                label="Cancelar"
+                            />
+                            <Button onClick={handleSubmmit} label="Guardar" />
+                        </>
                     ) : (
-                        <Button onClick={handlePreview} label="Previsualizar" />
+                        <>
+                            <Button
+                                onClick={() =>
+                                    router.get(
+                                        route("dashboard.contratos.index")
+                                    )
+                                }
+                                severity="secondary"
+                                label="Cancelar"
+                            />
+                            <Button
+                                onClick={handlePreview}
+                                label="Previsualizar"
+                            />
+                        </>
                     )}
                 </section>
             </div>

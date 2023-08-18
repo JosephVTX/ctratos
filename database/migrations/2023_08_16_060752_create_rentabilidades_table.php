@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('rentabilidades', function (Blueprint $table) {
             $table->id();
-            $table->string('porcentaje');
+            $table->string('porcentaje', 8);
             $table->foreignId('tipo_contrato_id')->constrained('tipo_contratos');
             $table->timestamps();
         });

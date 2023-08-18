@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
 
-            $table->string('departamento');
-            $table->string('direccion');
+            $table->string('departamento', 32);
+            $table->string('direccion', 128);
             $table->foreignId('supervisor_id')->constrained('supervisores');
             $table->timestamps();
         });

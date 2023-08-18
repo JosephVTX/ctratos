@@ -10,6 +10,8 @@ class Contrato extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
+        'area_id',
         'nombres',
         'apellidos',
         'tipo_doc',
@@ -33,12 +35,54 @@ class Contrato extends Model
         'tipo_cuenta_cliente',
         'numero_cuenta_cliente',
         'numero_cci_cliente',
-        'numero_cuenta_gjg',
-        'nombre_cuenta_gjg',
+        'banco_gjg',
         'dni_anverso',
         'dni_reverso',
         'declaracion_jurada',
         'sustento_declaracion_jurada',
         'comprobantes_pago',
     ];
+
+
+    protected $casts = [
+        'declaracion_jurada' => 'array',
+        'sustento_declaracion_jurada' => 'array',
+        'comprobantes_pago' => 'array',
+        'departamento' => 'array',
+        'provincia' => 'array',
+        'banco_gjg' => 'array',
+        'rentabilidad' => 'array',
+        'vigencia_contrato' => 'array',
+
+    ];
+
+    public function getCreatedAtAttribute()
+    {
+        return \Carbon\Carbon::parse($this->attributes['created_at'])->format('d/m/Y');
+    }
+
+    public function getContratos()
+    {
+
+        $search = request()->query('search');
+        $tipo_contrato = request()->query('tipo_contrato');
+        $moneda = request()->query('moneda');
+
+        return $this->where([
+            ['nombres', 'LIKE', "%{$search}%"],
+            ['apellidos', 'LIKE', "%{$search}%"],
+            ['tipo_contrato', 'LIKE', "%{$tipo_contrato}%"],
+            ['moneda', 'LIKE', "%{$moneda}%"]
+        ])->with('user', 'area')->get();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
+    }
 }

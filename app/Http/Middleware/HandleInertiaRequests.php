@@ -45,6 +45,11 @@ class HandleInertiaRequests extends Middleware
                     return $request->user()->roles->pluck('name');
                 }
             },
+
+            'query' => $request->query() ? $request->query() : null,
+
+
+            'routeName' => $request->route()->getName(),
         ]);
     }
 }

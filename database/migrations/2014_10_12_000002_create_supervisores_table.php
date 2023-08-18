@@ -13,12 +13,7 @@ return new class extends Migration
     {
         Schema::create('supervisores', function (Blueprint $table) {
             $table->id();
-
-            $table->string('nombre', 64);
-            $table->string('apellido', 64);
-            $table->string('documento',16);
-            $table->string('telefono', 16);
-            $table->string('correo', 128);
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('supervisors');
+        Schema::dropIfExists('supervisores');
     }
 };

@@ -17,12 +17,12 @@ class Area extends Model
 
     public function supervisor()
     {
-        return $this->belongsTo(Supervisor::class);
+        return $this->belongsTo(Supervisor::class)->with("user");
     }
 
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class, 'user_areas');
     }
 
     public function contratos()

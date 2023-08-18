@@ -17,13 +17,8 @@ class SupervisorFactory extends Factory
     public function definition(): array
     {
         return [
-            //
 
-            'nombre' => $this->faker->firstName(),
-            'apellido' => $this->faker->lastName(),
-            'documento' => $this->faker->unique()->randomNumber(9),
-            'telefono' => $this->faker->unique()->randomNumber(9),
-            'correo' => $this->faker->unique()->safeEmail(),
+            'user_id' => $this->faker->numberBetween(1, 4),
         ];
     }
 }

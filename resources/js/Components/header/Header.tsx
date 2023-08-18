@@ -17,13 +17,18 @@ function classNames(...classes: string[]) {
 export default function Header() {
     const {
         auth: { user },
+        role,
     } = usePage<PageProps>().props;
 
+    console.log(role);
+
     return (
-        <header className="flex flex-1 justify-between px-4 bg-gray-600  h-14">
-            <div className="flex flex-1" />
+        <header className="flex flex-1 justify-between p-4 w-full  z-10 bg-gray-600">
+            <div className="flex flex-1 items-center">
+                <img className="h-12" src="/img/logo.png" alt="Logo GJG" />
+            </div>
             <div className="ml-4 flex items-center md:ml-6">
-                <Menu as="div" className="relative ml-3 z-20">
+                <Menu as="div" className="relative ml-3 z-[100]">
                     <div>
                         <Menu.Button className="flex max-w-xs items-center  text-sm">
                             <div>
@@ -42,8 +47,23 @@ export default function Header() {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                     >
-                        <div className="absolute right-0 z-50 p-2 mt-2 w-48 origin-top-right rounded-md shadow-lg bg-surface-card">
+                        <div className="absolute right-0 p-2 bg-base-200 mt-2 w-48 origin-top-right rounded-md shadow-lg">
                             <Menu.Items>
+                                {role![0] === "God" && (
+                                    <Menu.Item
+                                        as="li"
+                                        className="hover:bg-surface-hover list-none"
+                                    >
+                                        <Link
+                                            type="button"
+                                            method="get"
+                                            href={route("dashboard.administracion.index")}
+                                            className="block px-4 py-2 text-sm "
+                                        >
+                                            Administración
+                                        </Link>
+                                    </Menu.Item>
+                                )}
                                 {userNavigation.map((item) => (
                                     <Menu.Item
                                         as="li"

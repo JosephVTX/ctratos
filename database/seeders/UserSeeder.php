@@ -28,14 +28,14 @@ class UserSeeder extends Seeder
                 'name' => $role,
                 'username' => $role,
                 'email' => $role . '@gmail.com',
-                'password' => bcrypt('12345678'),
-                'area_id' => 1,
                 'codigo' => fake()->unique()->text(6),
+                'estado' => fake()->randomElement(['Activo', 'Inactivo']),
+                'password' => bcrypt('12345678'),
             ]);
 
             $user->assignRole($role);
         }
 
-        \App\Models\User::factory(20)->create();
+        \App\Models\User::factory(4)->create();
     }
 }

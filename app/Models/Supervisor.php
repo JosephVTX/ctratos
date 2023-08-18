@@ -12,11 +12,7 @@ class Supervisor extends Model
     protected $table = 'supervisores';
 
     protected $fillable = [
-        'nombre',
-        'apellido',
-        'documento',
-        'telefono',
-        'correo',
+        'user_id',
     ];
 
     public function areas()
@@ -24,4 +20,8 @@ class Supervisor extends Model
         return $this->hasMany(Area::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

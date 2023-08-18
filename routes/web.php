@@ -26,9 +26,6 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
 
@@ -36,11 +33,14 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+
+    Route::resource('user', \App\Http\Controllers\UserController::class)->names('user');
+
     Route::get('/test', function () {
         return Inertia::render('Test');
     })->name('test');
 
-    /* Route::get('dashboard', [\App\Http\Controllers\Dashboard\HomeController::class, 'index'])->names('dashboard'); */
+    Route::get('dashboard', [\App\Http\Controllers\Dashboard\HomeController::class, 'index'])->name('dashboard');
 
     Route::get('roles', function () {
         return Inertia::render('Dashboard/Roles/Index', [
@@ -51,8 +51,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('dashboard/contratos/preview', [\App\Http\Controllers\Dashboard\ContratoController::class, 'preview'])->name('contratos.preview');
 
     Route::resource('dashboard/contratos', \App\Http\Controllers\Dashboard\ContratoController::class)->names('dashboard.contratos');
-});
 
+
+    Route::middleware(['role:God'])->group(function () {
+        Route::resource('dashboard/administracion', \App\Http\Controllers\Dashboard\AdministracionController::class)->names('dashboard.administracion');
+    });
+});
 
 
 require __DIR__ . '/auth.php';

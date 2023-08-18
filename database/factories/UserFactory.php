@@ -21,10 +21,8 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'username' => fake()->unique()->userName(),
-
-            
-            'codigo' => $this->faker->unique()->text(8),
-            'area_id' => $this->faker->randomElement(\App\Models\Area::pluck('id')),
+            'codigo' => $this->faker->unique()->text(5),
+            'estado' => $this->faker->randomElement(['Activo', 'Inactivo']),
             'email_verified_at' => now(),
             'password' => bcrypt('12345678'), // password
             'remember_token' => Str::random(10),
@@ -48,6 +46,7 @@ class UserFactory extends Factory
      public function configure(): static
      {
          return $this->afterCreating(function (\App\Models\User $user) {
+            
              $user->assignRole($this->faker->randomElement(['God', 'Tecnico', 'Supervisor', 'Usuario']));
          });
      }

@@ -108,17 +108,6 @@ export default function EditarUsuario({ areas, setClose, currentUser }) {
             <div>
                 <InputLabel isRequired value="Area" htmlFor="area" />
 
-                {/* <Dropdown
-                    inputId="area"
-                    className="w-full"
-                    filter
-                    value={data.area_id}
-                    onChange={(e) => setData("area_id", e.target.value)}
-                    options={areas}
-                    optionLabel="departamento"
-                    optionValue="id"
-                /> */}
-
                 <MultiSelect
                     inputId="area"
                     value={data.area_id}
@@ -148,13 +137,7 @@ export default function EditarUsuario({ areas, setClose, currentUser }) {
             </div>
 
             <div>
-                <InputLabel isRequired value="Contraseña" htmlFor="password" />
-                {/* <InputText
-                    id="password"
-                    type="password"
-                    value={data.password}
-                    onChange={(e) => setData("password", e.target.value)}
-                /> */}
+                <InputLabel value="Contraseña" htmlFor="password" />
                 <Password
                     value={data.password}
                     onChange={(e) => setData("password", e.target.value)}

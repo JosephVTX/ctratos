@@ -19,9 +19,16 @@ class AreaFactory extends Factory
         return [
             //
 
-            'departamento' => $this->faker->word(),
-            'direccion' => $this->faker->word(),
+            'departamento' => $this->faker->city(),
+            'direccion' => $this->faker->address(),
             'supervisor_id' => \App\Models\Supervisor::factory(),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (\App\Models\Area $area) {
+            $area->users()->attach($this->faker->numberBetween(1, 4));
+        });
     }
 }

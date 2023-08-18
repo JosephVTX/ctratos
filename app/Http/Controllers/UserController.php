@@ -21,7 +21,7 @@ class UserController extends Controller
 
 
         $user = User::create($request->validated());
-        
+
         $user->areas()->attach($request->area_id);
 
         $user->assignRole($request->rol);
@@ -31,9 +31,13 @@ class UserController extends Controller
 
 
     public function update(UpdateRequest $request, User $user)
-    {   
-        
-        $user->update($request->validated());
+    {
+
+        if ($request->password == null) {
+            $user->update($request->except('password'));
+        } else {
+            $user->update($request->validated());
+        }
 
         $user->areas()->sync($request->area_id);
 

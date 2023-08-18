@@ -25,7 +25,9 @@ export default function Header() {
     return (
         <header className="flex flex-1 justify-between p-4 w-full  z-10 bg-gray-600">
             <div className="flex flex-1 items-center">
-                <img className="h-12" src="/img/logo.png" alt="Logo GJG" />
+                <Link href={route("dashboard")}>
+                    <img className="h-12" src="/img/logo.png" alt="Logo GJG" />
+                </Link>
             </div>
             <div className="ml-4 flex items-center md:ml-6">
                 <Menu as="div" className="relative ml-3 z-[100]">

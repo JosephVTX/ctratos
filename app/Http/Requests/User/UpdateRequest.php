@@ -29,7 +29,7 @@ class UpdateRequest extends FormRequest
             'codigo' => 'required|string|max:255|unique:users,codigo,'.$this->route('user')->id,
             'username' => 'required|string|max:255|unique:users,username,'.$this->route('user')->id,
             'email' => 'required|string|email|max:255|unique:users,email,'.$this->route('user')->id,
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'nullable|string|min:8|confirmed',
             'area_id' => 'required|array',
             'area_id.*' => 'integer|exists:areas,id',
             'supervisor_id' => 'nullable|integer|exists:users,id',
@@ -53,10 +53,8 @@ class UpdateRequest extends FormRequest
             'username.required' => 'El usuario es requerido',
             'email.required' => 'El correo es requerido',
             'codigo.required' => 'El codigo es requerido',
-            'password.required' => 'La contraseña es requerida',
             'area_id.required' => 'El area es requerida',
             'area_id.*.required' => 'El area es requerida',
-            
             'rol.required' => 'El rol es requerido',
 
         ];

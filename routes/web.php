@@ -38,12 +38,17 @@
         Route::resource('dashboard/areas', \App\Http\Controllers\Dashboard\AreaController::class)->names('dashboard.areas');
 
         Route::get('test', function () {
-            return Inertia::render('Test');
+            return Inertia::render('Test', 
+            [
+                'areas' => \App\Models\Area::all(),
+                'users' => \App\Models\User::all(),
+            ]);
         });
 
         Route::get('dashboard', [\App\Http\Controllers\Dashboard\HomeController::class, 'index'])->name('dashboard');
 
         Route::post('dashboard/contratos/preview', [\App\Http\Controllers\Dashboard\ContratoController::class, 'preview'])->name('contratos.preview');
+        Route::post('dashboard/contratos/cronograma', [\App\Http\Controllers\Dashboard\ContratoController::class, 'cronograma'])->name('contratos.cronograma');
 
         Route::resource('dashboard/contratos', \App\Http\Controllers\Dashboard\ContratoController::class)->names('dashboard.contratos');
         Route::resource('dashboard/users', \App\Http\Controllers\Dashboard\UserController::class)->names('dashboard.users');

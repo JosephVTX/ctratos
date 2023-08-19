@@ -13,7 +13,7 @@ export default function InputLabel({
     return (
         <label
             {...props}
-            className={`block font-medium text-sm mb-1 ` + className}
+            className={`block font-medium text-sm my-1 ` + className}
         >
             {value ? value : children}{" "}
             <span className="text-red-500">{isRequired ? "(*)" : ""}</span>

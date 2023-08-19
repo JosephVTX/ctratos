@@ -14,15 +14,20 @@ export default function useSearch(queryKey: string, debounce: number = 1000) {
     );
 
     useEffect(() => {
-        if (debouncedValue)
-            router.replace(
-                route(routeName, {
+        if (debouncedValue) {
+            router.get(
+                route(routeName),
+                {
                     ...query,
                     [queryKey]: debouncedValue,
-                })
+                },
+                {
+                    preserveState: true,
+                }
             );
+        }
 
-        if (debouncedValue == "") router.replace(route(routeName));
+        if (debouncedValue == "") router.get(route(routeName));
     }, [debouncedValue]);
 
     return [inputValue, setInputValue];

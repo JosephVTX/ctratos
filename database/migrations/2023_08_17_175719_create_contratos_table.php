@@ -18,7 +18,7 @@ return new class extends Migration
 
         Schema::create('contratos', function (Blueprint $table) {
             $table->id()->from(1000);
-            
+
             $table->foreignId('user_id')->constrained();
             $table->foreignId('area_id')->constrained();
             $table->string('nombres', 64);

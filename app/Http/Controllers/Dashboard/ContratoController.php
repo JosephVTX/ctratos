@@ -7,6 +7,7 @@ use App\Http\Requests\Contrato\PreviewRequest;
 use App\Http\Requests\Contrato\StoreRequest;
 use App\Models\Contrato;
 use Illuminate\Http\Request;
+use Validator;
 
 class ContratoController extends Controller
 {
@@ -63,6 +64,22 @@ class ContratoController extends Controller
 
 
         return to_route("dashboard.contratos.create");
+    }
+
+    public function cronograma(Request $request) {
+
+        /* dd($request->all()); */
+
+        Validator::make([
+            'fecha' => $request->fecha,
+            'monto' => $request->monto,
+        ], [
+            'fecha' => 'required|date|after:today',
+            'monto' => 'required|numeric',
+
+        ])->validate();
+
+        to_route("dashboard.contratos.create");
     }
 
     public function show(Contrato $contrato)

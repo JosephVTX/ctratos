@@ -24,6 +24,11 @@ const navigation = [
         name: "Contratos",
         route: "dashboard.contratos.index",
     },
+    {
+        name: "Usuarios",
+        route: "users.index",
+        roles: ["God", "Tecnico"],
+    }
 ];
 export default function Header() {
     const {
@@ -43,8 +48,8 @@ export default function Header() {
                 </Link>
 
                 <ul className="flex text-surface-500 items-center px-4">
-                    {navigation.map((item) => (
-                        <Roles roles={item?.roles}>
+                    {navigation.map((item, index) => (
+                        <Roles key={index} roles={item?.roles}>
                             <li>
                                 <Link
                                     href={route(item.route)}
@@ -90,9 +95,7 @@ export default function Header() {
                                         <Link
                                             type="button"
                                             method="get"
-                                            href={route(
-                                                "dashboard.administracion.index"
-                                            )}
+                                            href={'#'}
                                             className="hover:underline block px-4 py-2 text-sm"
                                         >
                                             Administración

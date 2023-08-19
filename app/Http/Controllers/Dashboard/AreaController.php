@@ -12,6 +12,10 @@ class AreaController extends Controller
     public function __construct(Area $area)
     {
         $this->area = $area;
+
+        $this->middleware(['can:dashboard.areas.index'])->only('index');
+        $this->middleware(['can:dashboard.areas.edit'])->only('edit', 'update');
+        $this->middleware(['can:dashboard.areas.create'])->only('create', 'store');
     }
 
     public function index()

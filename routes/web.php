@@ -37,37 +37,14 @@
 
         Route::resource('dashboard/areas', \App\Http\Controllers\Dashboard\AreaController::class)->names('dashboard.areas');
 
-        Route::resource('user', \App\Http\Controllers\UserController::class)->names('user');
-
-        Route::get('/test', function () {
-            return Inertia::render('Test');
-        })->name('test');
 
         Route::get('dashboard', [\App\Http\Controllers\Dashboard\HomeController::class, 'index'])->name('dashboard');
-
-        Route::get('roles', function () {
-            return Inertia::render('Dashboard/Roles/Index', [
-                'users' => \App\Models\User::with('roles')->get(),
-            ]);
-        })->name('roles.index');
 
         Route::post('dashboard/contratos/preview', [\App\Http\Controllers\Dashboard\ContratoController::class, 'preview'])->name('contratos.preview');
 
         Route::resource('dashboard/contratos', \App\Http\Controllers\Dashboard\ContratoController::class)->names('dashboard.contratos');
+        Route::resource('dashboard/users', \App\Http\Controllers\Dashboard\UserController::class)->names('users');
 
-
-        Route::middleware(['role:God'])->group(function () {
-            Route::resource('dashboard/administracion', \App\Http\Controllers\Dashboard\AdministracionController::class)->names('dashboard.administracion');
-        });
-    });
-
-    Route::get("/email", function () {
-        return view("emails.password", [
-
-            'url' => 'https://www.google.com',
-            'host' => request()->getHost(),
-
-        ]);
     });
 
     require __DIR__ . '/auth.php';

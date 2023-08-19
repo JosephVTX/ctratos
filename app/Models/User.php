@@ -22,6 +22,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+
+
     protected $fillable = [
         'name',
         'username',
@@ -60,20 +63,7 @@ class User extends Authenticatable
     public function getUsers()
     {
 
-        // if this is
-
-        if (Auth::user()->hasRole(['God', 'Tecnico'])) {
-
-            return $this->with('areas')->get();
-        } else if (Auth::user()->hasRole(['Supervisor'])) {
-
-            // were Supervisor is area leader
-            return [];
-            
-        } else {
-
-            return [];
-        }
+        return $this->where('id', '!=', Auth::user()->id)->with('roles', 'areas')->get();
     }
 
     public function contratos()

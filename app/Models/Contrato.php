@@ -69,12 +69,7 @@ class Contrato extends Model
         $tipo_contrato = request()->query('tipo_contrato');
         $moneda = request()->query('moneda');
 
-        return $this->where([
-            ['nombres', 'LIKE', "%{$search}%"],
-            ['apellidos', 'LIKE', "%{$search}%"],
-            ['tipo_contrato', 'LIKE', "%{$tipo_contrato}%"],
-            ['moneda', 'LIKE', "%{$moneda}%"]
-        ])->with('user', 'area')->get();
+        return $this->where('nombres', 'like', "%{$search}%")->where('tipo_contrato', 'like', "%{$tipo_contrato}%")->where('moneda', 'like', "%{$moneda}%")->with('user', 'area')->get();
     }
 
     public function user()

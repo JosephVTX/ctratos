@@ -35,7 +35,20 @@ class RoleSeeder extends Seeder
             \Spatie\Permission\Models\Role::create($role);
         }
 
+        Permission::create(['name' => 'dashboard.areas.index'])->syncRoles(['God', 'Tecnico', 'Supervisor']);
+        Permission::create(['name' => 'dashboard.areas.create'])->syncRoles(['God', 'Tecnico', 'Supervisor']);
+        Permission::create(['name' => 'dashboard.areas.edit'])->syncRoles(['God', 'Tecnico', 'Supervisor']);
+        Permission::create(['name' => 'dashboard.areas.destroy'])->syncRoles(['God', 'Tecnico', 'Supervisor']);
 
-        
+
+        Permission::create(['name' => 'dashboard.contratos.index'])->syncRoles(['God', 'Tecnico', 'Supervisor', 'Usuario']);
+        Permission::create(['name' => 'dashboard.contratos.create'])->syncRoles(['God', 'Tecnico', 'Supervisor']);
+        Permission::create(['name' => 'dashboard.contratos.edit'])->syncRoles(['God', 'Tecnico', 'Supervisor']);
+        Permission::create(['name' => 'dashboard.contratos.destroy'])->syncRoles(['God', 'Tecnico', 'Supervisor']);
+
+        Permission::create(['name' => 'users.index'])->syncRoles(['God', 'Tecnico', 'Supervisor']);
+        Permission::create(['name' => 'users.create'])->syncRoles(['God', 'Tecnico', 'Supervisor']);
+        Permission::create(['name' => 'users.edit'])->syncRoles(['God', 'Tecnico']);
+        Permission::create(['name' => 'users.destroy'])->syncRoles(['God', 'Tecnico', 'Supervisor']);
     }
 }

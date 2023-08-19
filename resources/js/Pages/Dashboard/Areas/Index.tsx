@@ -37,7 +37,6 @@ export default function Index({ areas, supervisores, users }: Props) {
         any[] | DataTableExpandedRows
     >();
 
-
     const rowExpansionTemplate = (data: Area) => {
         return (
             <div className="p-3  space-y-4">
@@ -62,7 +61,7 @@ export default function Index({ areas, supervisores, users }: Props) {
     };
 
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout headTitle="Areas">
             <DataTable
                 showGridlines
                 className="shadow"

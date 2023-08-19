@@ -18,6 +18,7 @@ return new class extends Migration
 
         Schema::create('contratos', function (Blueprint $table) {
             $table->id()->from(1000);
+            
             $table->foreignId('user_id')->constrained();
             $table->foreignId('area_id')->constrained();
             $table->string('nombres', 64);
@@ -49,7 +50,7 @@ return new class extends Migration
             $table->json('declaracion_jurada');
             $table->json('sustento_declaracion_jurada');
             $table->json('comprobantes_pago');
-
+            $table->enum('estado', ['Revision', 'Aprobado', 'Rechazado'])->default('Revision');
             $table->timestamps();
         });
     }

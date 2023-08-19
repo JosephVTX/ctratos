@@ -6,15 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Contrato\PreviewRequest;
 use App\Http\Requests\Contrato\StoreRequest;
 use App\Models\Contrato;
+use Illuminate\Http\Request;
 
 class ContratoController extends Controller
 {
     // 
-    private $contratos;
+    private $contrato;
 
-    public function __construct(Contrato $contratos)
+    public function __construct(Contrato $contrato)
     {
-        $this->contratos = $contratos;
+        $this->contrato = $contrato;
     }
 
     public function index()
@@ -22,7 +23,7 @@ class ContratoController extends Controller
 
         return inertia('Dashboard/Contratos/Index', [
 
-            'contratos' => $this->contratos->getContratos()
+            'contratos' => $this->contrato->getContratos()
         ]);
     }
 
@@ -40,6 +41,14 @@ class ContratoController extends Controller
             'rentabilidades' => \App\Models\Rentabilidad::all(),
             'vigencia_contratos' => \App\Models\VigenciaContrato::all(),
         ]);
+    }
+
+    public function update(Request $request, Contrato $contrato)
+    {
+
+        $contrato->update($request->all());
+
+        return to_route("dashboard.contratos.index");
     }
 
     public function store(StoreRequest $request)

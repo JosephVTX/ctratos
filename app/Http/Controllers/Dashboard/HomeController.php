@@ -8,18 +8,19 @@ use App\Models\User;
 
 class HomeController extends Controller
 {
-    private $user;
+    public $user, $area;
 
-    public function __construct(User $user)
+    public function __construct(User $user, Area $area)
     {
         $this->user = $user;
+        $this->area = $area;
     }
 
     public function index()
     {
         return inertia('Dashboard/Index', [
             'users' => $this->user->getUsers(),
-            'areas' => Area::with('supervisor', 'users')->get(),
+            'areas' => $this->area->getAreas(),
         ]);
     }
 }

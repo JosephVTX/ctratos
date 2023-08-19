@@ -53,6 +53,7 @@ class ContratoFactory extends Factory
         */
         return [
             //
+            'estado' => $this->faker->randomElement(['Revision', 'Aprobado', 'Rechazado']), // 'Revision', 'Aprobado', 'Rechazado
             'user_id' => $this->faker->numberBetween(1, 4),
             'area_id' => $this->faker->numberBetween(1, 4),
             'nombres' => $this->faker->name(),

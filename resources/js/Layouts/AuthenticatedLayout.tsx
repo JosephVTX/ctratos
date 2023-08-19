@@ -19,7 +19,7 @@ export default function AuthenticatedLayout({
             <Head title={headTitle} />
             <Header />
             <div className="py-8">
-                <div className="container mx-auto">{children}</div>
+                <div className="px-4">{children}</div>
             </div>
         </>
     );

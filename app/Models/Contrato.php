@@ -41,6 +41,7 @@ class Contrato extends Model
         'declaracion_jurada',
         'sustento_declaracion_jurada',
         'comprobantes_pago',
+        'estado',
     ];
 
 

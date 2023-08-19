@@ -54,40 +54,10 @@ namespace App\Models{
 /**
  * App\Models\Client
  *
- * @property int $id
- * @property string $first_name
- * @property string $last_name
- * @property string $type_document
- * @property string $document
- * @property string $department
- * @property string $province
- * @property string $district
- * @property string $address
- * @property string $email
- * @property string $phone
- * @property string $gender
- * @property string $occupation
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Database\Factories\ClientFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Client newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Client newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Client query()
- * @method static \Illuminate\Database\Eloquent\Builder|Client whereAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Client whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Client whereDepartment($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Client whereDistrict($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Client whereDocument($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Client whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Client whereFirstName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Client whereGender($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Client whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Client whereLastName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Client whereOccupation($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Client wherePhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Client whereProvince($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Client whereTypeDocument($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Client whereUpdatedAt($value)
  */
 	class Client extends \Eloquent {}
 }
@@ -96,15 +66,9 @@ namespace App\Models{
 /**
  * App\Models\ClientAccount
  *
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|ClientAccount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ClientAccount newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ClientAccount query()
- * @method static \Illuminate\Database\Eloquent\Builder|ClientAccount whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientAccount whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClientAccount whereUpdatedAt($value)
  */
 	class ClientAccount extends \Eloquent {}
 }
@@ -136,22 +100,10 @@ namespace App\Models{
 /**
  * App\Models\ContractValidity
  *
- * @property int $id
- * @property int $quantity
- * @property string $unit
- * @property int $profit_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\ContractType|null $contractType
  * @method static \Illuminate\Database\Eloquent\Builder|ContractValidity newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ContractValidity newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ContractValidity query()
- * @method static \Illuminate\Database\Eloquent\Builder|ContractValidity whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ContractValidity whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ContractValidity whereProfitId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ContractValidity whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ContractValidity whereUnit($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ContractValidity whereUpdatedAt($value)
  */
 	class ContractValidity extends \Eloquent {}
 }
@@ -192,6 +144,7 @@ namespace App\Models{
  * @property array $declaracion_jurada
  * @property array $sustento_declaracion_jurada
  * @property array $comprobantes_pago
+ * @property string $estado
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Area $area
@@ -215,6 +168,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereDistrito($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereDniAnverso($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereDniReverso($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereEstado($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereFechaFin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereFechaInicio($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereGenero($value)

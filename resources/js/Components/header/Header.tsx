@@ -6,15 +6,19 @@ import { PageProps } from "@/types";
 import Roles from "../protect/Roles";
 
 const userNavigation = [
-    { name: "Perfil", href: "#", method: "get" },
     { name: "Ajustes", href: "#", method: "get" },
     { name: "Ayuda", href: "#", method: "get" },
 ];
 
 const navigation = [
     {
-        name: "Dashboard",
+        name: "Inicio",
         route: "dashboard",
+    },
+    {
+        name: "Areas",
+        route: "dashboard.areas.index",
+        roles: ["God", "Tecnico", "Supervisor"],
     },
     {
         name: "Contratos",
@@ -31,22 +35,30 @@ export default function Header() {
         <header className="flex flex-1 justify-between p-4 w-full  z-10 bg-surface-100">
             <div className="flex flex-1 items-center">
                 <Link href={route("dashboard")}>
-                    <img className="h-10" src="/img/logo-gjg.png" alt="Logo GJG" />
+                    <img
+                        className="h-10"
+                        src="/img/logo-gjg.png"
+                        alt="Logo GJG"
+                    />
                 </Link>
 
                 <ul className="flex text-surface-500 items-center px-4">
                     {navigation.map((item) => (
-                        <li key={item.name}>
-                            <Link
-                                href={route(item.route)}
-                                method="get"
-                                className={`px-4 py-2  font-semibold ${
-                                    routeName === item.route ? "underline" : ""
-                                }`}
-                            >
-                                {item.name}
-                            </Link>
-                        </li>
+                        <Roles roles={item?.roles}>
+                            <li>
+                                <Link
+                                    href={route(item.route)}
+                                    method="get"
+                                    className={`px-4 py-2  font-semibold ${
+                                        routeName === item.route
+                                            ? "underline"
+                                            : ""
+                                    }`}
+                                >
+                                    {item.name}
+                                </Link>
+                            </li>
+                        </Roles>
                     ))}
                 </ul>
             </div>
@@ -55,9 +67,7 @@ export default function Header() {
                     <div>
                         <Menu.Button className="flex max-w-xs items-center  text-sm">
                             <div>
-                                <p className="font-medium ">
-                                    {user.email}
-                                </p>
+                                <p className="font-medium ">{user.email}</p>
                             </div>
                         </Menu.Button>
                     </div>
@@ -83,7 +93,7 @@ export default function Header() {
                                             href={route(
                                                 "dashboard.administracion.index"
                                             )}
-                                            className="hover:bg-base-100 block px-4 py-2 text-sm"
+                                            className="hover:underline block px-4 py-2 text-sm"
                                         >
                                             Administración
                                         </Link>
@@ -100,7 +110,7 @@ export default function Header() {
                                             method={item.method as Method}
                                             href={item.href}
                                             className={
-                                                "block px-4 py-2 text-sm"
+                                                "block px-4 hover:underline py-2 text-sm"
                                             }
                                         >
                                             {item.name}

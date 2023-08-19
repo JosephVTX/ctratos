@@ -3,6 +3,7 @@ import { Link, usePage } from "@inertiajs/react";
 import { Fragment } from "react";
 import { Method } from "@inertiajs/core";
 import { PageProps } from "@/types";
+import Roles from "../protect/Roles";
 
 const userNavigation = [
     { name: "Perfil", href: "#", method: "get" },
@@ -10,31 +11,51 @@ const userNavigation = [
     { name: "Ayuda", href: "#", method: "get" },
 ];
 
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(" ");
-}
-
+const navigation = [
+    {
+        name: "Dashboard",
+        route: "dashboard",
+    },
+    {
+        name: "Contratos",
+        route: "dashboard.contratos.index",
+    },
+];
 export default function Header() {
     const {
         auth: { user },
-        role,
+        routeName,
     } = usePage<PageProps>().props;
 
-    console.log(role);
-
     return (
-        <header className="flex flex-1 justify-between p-4 w-full  z-10 bg-gray-600">
+        <header className="flex flex-1 justify-between p-4 w-full  z-10 bg-surface-100">
             <div className="flex flex-1 items-center">
                 <Link href={route("dashboard")}>
-                    <img className="h-12" src="/img/logo.png" alt="Logo GJG" />
+                    <img className="h-10" src="/img/logo-gjg.png" alt="Logo GJG" />
                 </Link>
+
+                <ul className="flex text-surface-500 items-center px-4">
+                    {navigation.map((item) => (
+                        <li key={item.name}>
+                            <Link
+                                href={route(item.route)}
+                                method="get"
+                                className={`px-4 py-2  font-semibold ${
+                                    routeName === item.route ? "underline" : ""
+                                }`}
+                            >
+                                {item.name}
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
             </div>
             <div className="ml-4 flex items-center md:ml-6">
-                <Menu as="div" className="relative ml-3 z-[100]">
+                <Menu as="div" className="relative ml-3 z-[100] ">
                     <div>
                         <Menu.Button className="flex max-w-xs items-center  text-sm">
                             <div>
-                                <p className="font-medium text-base-100">
+                                <p className="font-medium ">
                                     {user.email}
                                 </p>
                             </div>
@@ -49,9 +70,9 @@ export default function Header() {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                     >
-                        <div className="absolute right-0 p-2 bg-base-200 mt-2 w-48 origin-top-right rounded-md shadow-lg">
+                        <div className="absolute right-0 p-2 bg-white  border-primary mt-2 w-48 origin-top-right rounded-md shadow-lg">
                             <Menu.Items>
-                                {role![0] === "God" && (
+                                <Roles roles={["God"]}>
                                     <Menu.Item
                                         as="li"
                                         className="hover:bg-surface-hover list-none"
@@ -59,32 +80,31 @@ export default function Header() {
                                         <Link
                                             type="button"
                                             method="get"
-                                            href={route("dashboard.administracion.index")}
-                                            className="block px-4 py-2 text-sm "
+                                            href={route(
+                                                "dashboard.administracion.index"
+                                            )}
+                                            className="hover:bg-base-100 block px-4 py-2 text-sm"
                                         >
                                             Administración
                                         </Link>
                                     </Menu.Item>
-                                )}
+                                </Roles>
                                 {userNavigation.map((item) => (
                                     <Menu.Item
                                         as="li"
                                         className="hover:bg-surface-hover list-none"
                                         key={item.name}
                                     >
-                                        {({ active }) => (
-                                            <Link
-                                                type="button"
-                                                method={item.method as Method}
-                                                href={item.href}
-                                                className={classNames(
-                                                    active ? "bg-base-100" : "",
-                                                    "block px-4 py-2 text-sm "
-                                                )}
-                                            >
-                                                {item.name}
-                                            </Link>
-                                        )}
+                                        <Link
+                                            type="button"
+                                            method={item.method as Method}
+                                            href={item.href}
+                                            className={
+                                                "block px-4 py-2 text-sm"
+                                            }
+                                        >
+                                            {item.name}
+                                        </Link>
                                     </Menu.Item>
                                 ))}
                             </Menu.Items>
@@ -92,7 +112,7 @@ export default function Header() {
                                 as="button"
                                 href={route("logout")}
                                 method="post"
-                                className="w-full  py-2 border-surface-border border-2 rounded-btn mt-2"
+                                className="w-full py-2 border rounded-btn mt-2"
                             >
                                 Cerrar sesión
                             </Link>

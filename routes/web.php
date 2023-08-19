@@ -58,5 +58,13 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+Route::get("/email", function () {
+    return view("emails.password", [
+
+        'url' => 'https://www.google.com',
+        'host' => request()->getHost(),
+
+    ]);
+});
 
 require __DIR__ . '/auth.php';

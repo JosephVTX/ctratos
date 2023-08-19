@@ -136,8 +136,9 @@ export default function Index({ contratos }) {
                     value={contratos}
                     showGridlines
                     className="[&_tbody]:text-[17px]"
+                    scrollable
                 >
-                    <Column sortable field="id" header="Correlativo" />
+                    <Column  sortable field="id" header="Correlativo" />
                     <Column sortable body={docTemplate} header="Nº Identidad" />
                     <Column sortable field="nombres" header="Cliente" />
                     <Column sortable field="tipo_contrato" header="Plan" />

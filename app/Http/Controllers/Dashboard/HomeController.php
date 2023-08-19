@@ -22,6 +22,4 @@ class HomeController extends Controller
             'areas' => Area::with('supervisor', 'users')->get(),
         ]);
     }
-
-    
 }

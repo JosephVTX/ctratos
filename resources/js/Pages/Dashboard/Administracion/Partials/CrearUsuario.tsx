@@ -38,9 +38,9 @@ export default function CrearUsuario({ areas, setClose }) {
     const submit = (e) => {
         e.preventDefault();
 
-        console.log(data);
 
-        /* router.post(
+
+        router.post(
             route("user.store"),
             {
                 ...data,
@@ -51,7 +51,7 @@ export default function CrearUsuario({ areas, setClose }) {
                     setClose(false);
                 },
             }
-        ); */
+        );
     };
 
     return (

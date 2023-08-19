@@ -62,16 +62,7 @@ class User extends Authenticatable
 
         // if this is
 
-        if (Auth::user()->hasRole(['God', 'Tecnico'])) {
-
-            return $this->with('areas')->get();
-
-        } else if (Auth::user()->hasRole(['Supervisor'])) {
-
-            return $this->with('area.supervisor')->where('area_id', Auth::user()->area_id)->get();
-        } else {
-            return [];
-        }
+        return $this->with('areas')->get();
     }
 
     public function contratos()

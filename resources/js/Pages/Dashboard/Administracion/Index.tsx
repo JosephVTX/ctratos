@@ -12,9 +12,11 @@ import { useRef, useState } from "react";
 import CrearUsuario from "./Partials/CrearUsuario";
 import { router } from "@inertiajs/react";
 import EditarUsuario from "./Partials/EditarUsuario";
+import Roles from "@/Components/protect/Roles";
 
 export default function Index({ users, areas }) {
-    const toast = useRef(null);
+    const toast = useRef<Toast | never>(null);
+
     const [inputValue, setInputValue] = useSearch("search");
 
     const [openCreateModal, setOpenCreateModal] = useState(false);
@@ -55,9 +57,7 @@ export default function Index({ users, areas }) {
     };
 
     const areasBodyTemplate = (rowData) => {
-
         return (
-
             <div className="flex flex-col">
                 {rowData.areas.map((area) => (
                     <span key={area.id}>{area.departamento}</span>
@@ -69,10 +69,10 @@ export default function Index({ users, areas }) {
     const handleDeleteUser = (id) => {
         router.delete(route("user.destroy", id), {
             onSuccess: () => {
-                toast?.current.show({
+                toast.current!.show({
                     severity: "success",
-                    summary: "Exito",
-                    detail: "Usuario Eliminado",
+                    summary: "Usuario eliminado",
+                    detail: "El usuario ha sido eliminado correctamente",
                     life: 3000,
                 });
             },
@@ -100,8 +100,6 @@ export default function Index({ users, areas }) {
         );
     };
 
-    
-
     return (
         <>
             <AuthenticatedLayout headTitle="Administración">
@@ -111,6 +109,7 @@ export default function Index({ users, areas }) {
                     paginator
                     rows={10}
                     className="shadow"
+                    scrollHeight="60vh"
                     value={users}
                 >
                     <Column sortable field="name" header="Nombre" />
@@ -144,6 +143,8 @@ export default function Index({ users, areas }) {
             </Dialog>
 
             <Toast ref={toast} />
+
+            <Roles roles={["Supervisor", "Tecnico"]}>XD</Roles>
         </>
     );
 }

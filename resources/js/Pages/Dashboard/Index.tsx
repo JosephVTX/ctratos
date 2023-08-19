@@ -66,7 +66,9 @@ export default function Index({ areas, supervisores, users }: Props) {
         <AuthenticatedLayout>
             <DataTable
                 showGridlines
-                className="shadow"
+                className="shadow"scrollHeight="80vh"
+               
+                scrollable
                 value={areas}
                 expandedRows={expandedRows}
                 onRowToggle={(e) => setExpandedRows(e.data)}

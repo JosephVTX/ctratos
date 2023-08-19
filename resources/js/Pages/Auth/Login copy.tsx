@@ -74,10 +74,7 @@ export default function Login() {
                                             name="username"
                                             value={data.username}
                                             onChange={(e) =>
-                                                setData(
-                                                    "username",
-                                                    e.target.value
-                                                )
+                                                setData("username", e.target.value)
                                             }
                                         />
                                         <InputError message={errors.username} />
@@ -99,7 +96,7 @@ export default function Login() {
                                         <InputError message={errors.password} />
                                     </div>
                                 </div>
-
+                                
                                 <div className="grid grid-cols-2 divide-x-[1px]">
                                     <button
                                         type="submit"

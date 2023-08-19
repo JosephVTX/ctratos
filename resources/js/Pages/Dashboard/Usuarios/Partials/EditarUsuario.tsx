@@ -39,7 +39,7 @@ export default function EditarUsuario({ areas, setClose, currentUser }) {
         e.preventDefault();
 
         router.patch(
-            route("users.update", currentUser.id),
+            route("dashboard.users.update", currentUser.id),
             {
                 ...data,
                 password_confirmation: data.password,

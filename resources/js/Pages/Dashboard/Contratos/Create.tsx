@@ -930,7 +930,7 @@ export default function Create({
 
             {openModalPreview && (
                 <div className="bg-black fixed h-screen overflow-scroll w-screen top-0 left-0 z-[100] pb-16">
-                    <CortoPlazo logo={withLogo} {...data} />
+                    {/* <CortoPlazo logo={withLogo} {...data} /> */}
                 </div>
             )}
             <div className="fixed bottom-0 z-[1000]  w-full bg-base-200 shadow-2xl border p-4 flex justify-end gap-4 items-center">

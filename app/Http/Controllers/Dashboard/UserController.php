@@ -16,7 +16,6 @@ class UserController extends Controller
 
     {   
         
-
         $this->user = $user;
         $this->area = $area;
         $this->authorizeResource(User::class, 'user');
@@ -42,7 +41,7 @@ class UserController extends Controller
 
         $user->assignRole($request->rol);
 
-        return to_route('users.index');
+        return to_route('dashboard.users.index');
     }
 
     public function update(UpdateRequest $request, User $user)
@@ -58,7 +57,7 @@ class UserController extends Controller
 
         $user->syncRoles($request->rol);
 
-        return to_route('users.index');
+        return to_route('dashboard.users.index');
     }
 
     public function destroy(User $user)
@@ -66,6 +65,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        return to_route('users.index');
+        return to_route('dashboard.users.index');
     }
 }

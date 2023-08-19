@@ -16,9 +16,7 @@ class ContratoController extends Controller
     public function __construct(Contrato $contrato)
     {
         $this->contrato = $contrato;
-        $this->middleware(['can:dashboard.contratos.index'])->only('index');
-        $this->middleware(['can:dashboard.contratos.edit'])->only('edit', 'update');
-        $this->middleware(['can:dashboard.contratos.create'])->only('create', 'store');
+        $this->authorizeResource(Contrato::class, 'contrato');
     }
 
     public function index()

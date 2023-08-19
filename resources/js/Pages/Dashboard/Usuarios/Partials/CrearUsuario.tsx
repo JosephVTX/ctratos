@@ -41,7 +41,7 @@ export default function CrearUsuario({ areas, setClose }) {
 
 
         router.post(
-            route("users.store"),
+            route("dashboard.users.store"),
             {
                 ...data,
                 password_confirmation: data.password,

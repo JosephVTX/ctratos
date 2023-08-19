@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 
-class UserPolicy
+class ContratoPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -13,14 +13,8 @@ class UserPolicy
     {
         //
 
-        if ($user->can('dashboard.users.index')) {
-
-            return true;
-        }
-
-        return false;
+        return $user->can('dashboard.contratos.index') ? true : false;
     }
-
 
     /**
      * Determine whether the user can view the model.
@@ -29,13 +23,7 @@ class UserPolicy
     {
         //
 
-
-        if ($user->can('dashboard.users.index')) {
-
-            return true;
-        }
-
-        return false;
+        return $user->can('dashboard.contratos.index') ? true : false;
     }
 
     /**
@@ -45,12 +33,7 @@ class UserPolicy
     {
         //
 
-        if ($user->can('dashboard.users.create')) {
-
-            return true;
-        }
-
-        return false;
+        return $user->can('dashboard.contratos.create') ? true : false;
     }
 
     /**
@@ -60,13 +43,7 @@ class UserPolicy
     {
         //
 
-
-        if ($user->can('dashboard.users.edit')) {
-
-            return true;
-        }
-
-        return false;
+        return $user->can('dashboard.contratos.edit') ? true : false;
     }
 
     /**
@@ -76,12 +53,7 @@ class UserPolicy
     {
         //
 
-        if ($user->can('dashboard.users.destroy')) {
-
-            return true;
-        }
-
-        return false;
+        return $user->can('dashboard.contratos.destroy') ? true : false;
     }
 
     /**
@@ -91,12 +63,7 @@ class UserPolicy
     {
         //
 
-        if ($user->can('dashboard.users.index')) {
-
-            return true;
-        }
-
-        return false;
+        return $user->can('dashboard.contratos.index') ? true : false;
     }
 
     /**
@@ -106,11 +73,6 @@ class UserPolicy
     {
         //
 
-        if ($user->can('dashboard.users.index')) {
-
-            return true;
-        }
-
-        return false;
+        return $user->can('dashboard.contratos.index') ? true : false;
     }
 }

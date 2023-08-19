@@ -16,7 +16,7 @@ import { useRef } from "react";
 
 import { Tag } from "primereact/tag";
 import { InputSwitch } from "primereact/inputswitch";
-import Roles from "@/Components/protect/Roles";
+import Can from "@/Components/protect/Can";
 
 const getSeverity = (status) => {
     switch (status) {
@@ -99,12 +99,16 @@ export default function Index({ contratos }) {
         </div>
     );
     const endContent = (
-        <div className="flex items-center gap-4">
-            <Button
-                onClick={() => router.get(route("dashboard.contratos.create"))}
-                label="Nuevo Contrato"
-            />
-        </div>
+        <Can value="dashboard.contratos.create">
+            <div className="flex items-center gap-4">
+                <Button
+                    onClick={() =>
+                        router.get(route("dashboard.contratos.create"))
+                    }
+                    label="Nuevo Contrato"
+                />
+            </div>
+        </Can>
     );
 
     const capitalTemplate = (rowData) => {
@@ -211,7 +215,7 @@ export default function Index({ contratos }) {
 
     const footerDialog = () => {
         return (
-            <Roles roles={["Supervisor"]}>
+            <Can value="dashboard.contratos.edit">
                 <div className="flex items-center justify-end gap-4 mt-4">
                     <Button
                         onClick={confirm}
@@ -219,7 +223,7 @@ export default function Index({ contratos }) {
                         className="p-button-success"
                     />
                 </div>
-            </Roles>
+            </Can>
         );
     };
     const headerDialog = () => {
@@ -244,6 +248,7 @@ export default function Index({ contratos }) {
                     className="[&_tbody]:text-[17px]"
                     scrollable
                     selectionMode="single"
+                    rowsPerPageOptions={[5, 10, 25, 50]}
                 >
                     <Column sortable field="id" header="Correlativo" />
                     <Column sortable body={docTemplate} header="Nº Identidad" />

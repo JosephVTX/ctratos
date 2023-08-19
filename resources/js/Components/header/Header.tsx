@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import { Method } from "@inertiajs/core";
 import { PageProps } from "@/types";
 import Roles from "../protect/Roles";
+import Can from "../protect/Can";
 
 const userNavigation = [
     { name: "Ajustes", href: "#", method: "get" },
@@ -18,7 +19,6 @@ const navigation = [
     {
         name: "Areas",
         route: "dashboard.areas.index",
-        roles: ["God", "Tecnico", "Supervisor"],
     },
     {
         name: "Contratos",
@@ -26,9 +26,8 @@ const navigation = [
     },
     {
         name: "Usuarios",
-        route: "users.index",
-        roles: ["God", "Tecnico"],
-    }
+        route: "dashboard.users.index",
+    },
 ];
 export default function Header() {
     const {
@@ -49,7 +48,7 @@ export default function Header() {
 
                 <ul className="flex text-surface-500 items-center px-4">
                     {navigation.map((item, index) => (
-                        <Roles key={index} roles={item?.roles}>
+                        <Can key={index} value={item.route}>
                             <li>
                                 <Link
                                     href={route(item.route)}
@@ -63,7 +62,7 @@ export default function Header() {
                                     {item.name}
                                 </Link>
                             </li>
-                        </Roles>
+                        </Can>
                     ))}
                 </ul>
             </div>
@@ -95,7 +94,7 @@ export default function Header() {
                                         <Link
                                             type="button"
                                             method="get"
-                                            href={'#'}
+                                            href={"#"}
                                             className="hover:underline block px-4 py-2 text-sm"
                                         >
                                             Administración

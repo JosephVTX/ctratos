@@ -13,6 +13,7 @@ import CrearUsuario from "./Partials/CrearUsuario";
 import { router } from "@inertiajs/react";
 import EditarUsuario from "./Partials/EditarUsuario";
 import Roles from "@/Components/protect/Roles";
+import Can from "@/Components/protect/Can";
 
 export default function Index({ usuarios, areas }) {
     const toast = useRef<Toast | never>(null);
@@ -82,20 +83,24 @@ export default function Index({ usuarios, areas }) {
     const actionBodyTemplate = (rowData) => {
         return (
             <div className="flex items-center gap-4">
-                <Button
-                    onClick={() => {
-                        setCurrentUser(rowData);
-                        setOpenEditModal(true);
-                    }}
-                    className="p-button-rounded p-button-success p-button-text"
-                    icon="pi pi-pencil"
-                />
+                <Can value="dashboard.users.edit">
+                    <Button
+                        onClick={() => {
+                            setCurrentUser(rowData);
+                            setOpenEditModal(true);
+                        }}
+                        className="p-button-rounded p-button-success p-button-text"
+                        icon="pi pi-pencil"
+                    />
+                </Can>
 
-                <Button
-                    onClick={() => handleDeleteUser(rowData.id)}
-                    className="p-button-rounded p-button-danger p-button-text"
-                    icon="pi pi-trash"
-                />
+                <Can value="dashboard.users.destroy">
+                    <Button
+                        onClick={() => handleDeleteUser(rowData.id)}
+                        className="p-button-rounded p-button-danger p-button-text"
+                        icon="pi pi-trash"
+                    />
+                </Can>
             </div>
         );
     };

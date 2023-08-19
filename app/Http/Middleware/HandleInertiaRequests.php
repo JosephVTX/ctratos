@@ -50,6 +50,14 @@ class HandleInertiaRequests extends Middleware
 
 
             'routeName' => $request->route()->getName(),
+
+            'permissions' => function () use ($request) {
+                if ($request->user()) {
+                    return $request->user()->getAllPermissions()->pluck('name');
+                } else {
+                    return [];
+                }
+            },
         ]);
     }
 }

@@ -14,7 +14,7 @@ class AreaSeeder extends Seeder
     {
         //
 
-        \App\Models\Area::factory(20)->create();
+        \App\Models\Area::factory(10)->create();
         
     }
 }

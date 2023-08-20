@@ -10,16 +10,18 @@ type Props = {
     file?: File;
 
     logo?: boolean;
+
+    title?: string;
 };
 
-const Pdf = ({ url, file, logo }: Props) => {
+const Pdf = ({ url, file, logo, title }: Props) => {
     const [pages, setPages] = useState<Array<JSX.Element>>([]);
     const loadPDF = async () => {
         const loadingTask = pdfjs.getDocument(
             url ?? URL.createObjectURL(file!)
         );
         const pdf = await loadingTask.promise;
-        const newPages = [];
+        let newPages: JSX.Element[] = [];
 
         for (let i = 1; i <= pdf.numPages; i++) {
             const page = await pdf.getPage(i);
@@ -33,7 +35,7 @@ const Pdf = ({ url, file, logo }: Props) => {
                 viewport,
             }).promise;
             newPages.push(
-                <Paper logo={logo} key={i}>
+                <Paper showTitle={false} title={title} logo={logo} key={i}>
                     <img src={canvas.toDataURL()} alt={`Page ${i}`} />
                 </Paper>
             );
@@ -49,9 +51,9 @@ const Pdf = ({ url, file, logo }: Props) => {
     return pages;
 };
 
-const Image = ({ url, file, logo }: Props) => {
+const Image = ({ url, file, logo, title }: Props) => {
     return (
-        <Paper logo={logo}>
+        <Paper showTitle={false} title={title} logo={logo}>
             <img src={url ?? URL.createObjectURL(file!)} alt="" />
         </Paper>
     );
@@ -62,14 +64,26 @@ export default function PaperMedia({
     file,
     logo,
     isImage,
+    title,
 }: Props & { isImage: boolean }) {
     return (
         <>
             {isImage ? (
-                <Image url={url} file={file} logo={logo} />
+                <Image url={url} title={title} file={file} logo={logo} />
             ) : (
-                <Pdf url={url} file={file} logo={logo} />
+                <Pdf url={url} title={title} file={file} logo={logo} />
             )}
         </>
     );
 }
+
+const PaperImageUrl = ({ url, title }: Props) => {
+    return (
+        <Paper showTitle={false} title={title} logo={false}>
+            <img src={url} alt="Paper Image Url" />
+        </Paper>
+    );
+};
+
+
+export { PaperImageUrl };

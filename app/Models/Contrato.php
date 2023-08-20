@@ -57,9 +57,19 @@ class Contrato extends Model
 
     ];
 
+    protected $appends = ['created_at', 'titulo_contrato'];
+
     public function getCreatedAtAttribute()
     {
         return \Carbon\Carbon::parse($this->attributes['created_at'])->format('d/m/Y');
+    }
+
+
+    public function getTituloContratoAttribute()
+    {   
+        $month = date('m', strtotime($this->attributes['created_at']));
+        $year = date('Y', strtotime($this->attributes['created_at']));
+        return $this->user->codigo.'-'.$month.'-'.$this->id. ' / ' . $year.'-'.'GJG';
     }
 
     public function getContratos()

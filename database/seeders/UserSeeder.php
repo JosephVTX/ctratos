@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
                 'name' => $role,
                 'username' => $role,
                 'email' => $role . '@gmail.com',
-                'codigo' => fake()->unique()->text(6),
+                'codigo' => fake()->regexify('[A-Z]{5}'),
                 'estado' => fake()->randomElement(['Activo', 'Inactivo']),
                 'password' => bcrypt('12345678'),
             ]);
@@ -36,5 +36,6 @@ class UserSeeder extends Seeder
             $user->assignRole($role);
         }
 
+        User::factory(10)->create();
     }
 }

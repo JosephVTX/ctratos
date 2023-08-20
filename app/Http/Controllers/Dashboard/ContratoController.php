@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Contrato\PreviewRequest;
 use App\Http\Requests\Contrato\StoreRequest;
 use App\Models\Contrato;
+use App\Services\FileService;
 use Illuminate\Http\Request;
+use Storage;
 use Validator;
 
 class ContratoController extends Controller
@@ -56,7 +58,41 @@ class ContratoController extends Controller
     public function store(StoreRequest $request)
     {
 
-        dd($request->all());
+        /* dd($request->all()); */
+
+
+        $declaracion_jurada = [];
+        $sustento_declaracion_jurada = [];
+        $comprobantes_pago = [];
+
+        $dni_anverso = FileService::upload($request->dni_anverso, "contratos");
+        $dni_reverso = FileService::upload($request->dni_reverso, "contratos");
+        $file_types = [
+            'declaracion_jurada' => &$declaracion_jurada,
+            'sustento_declaracion_jurada' => &$sustento_declaracion_jurada,
+            'comprobantes_pago' => &$comprobantes_pago
+        ];
+
+        foreach ($request->all() as $key => $values) {
+            if (array_key_exists($key, $file_types)) {
+                foreach ($values as $index => $value) {
+                    $file_types[$key][$index] = FileService::upload($value, "contratos");
+                }
+            }
+        }
+
+        Contrato::create(array_merge($request->validated(), [
+            'user_id' => auth()->user()->id,
+            'area_id' => 1,
+            'declaracion_jurada' => $declaracion_jurada,
+            'sustento_declaracion_jurada' => $sustento_declaracion_jurada,
+            'comprobantes_pago' => $comprobantes_pago,
+            'banco_gjg' => $request->banco_gjg,
+            'dni_anverso' => $dni_anverso,
+            'dni_reverso' => $dni_reverso,
+        ]));
+
+        return to_route("dashboard.contratos.index");
     }
 
     public function preview(PreviewRequest $request)
@@ -66,7 +102,8 @@ class ContratoController extends Controller
         return to_route("dashboard.contratos.create");
     }
 
-    public function cronograma(Request $request) {
+    public function cronograma(Request $request)
+    {
 
         /* dd($request->all()); */
 

@@ -1,11 +1,12 @@
 import Paper from "@/Components/paper/Paper";
-import PaperMedia from "@/Components/paper/PaperMedia";
+import { PaperImageUrl } from "@/Components/paper/PaperMedia";
 import { formatCurrency } from "@/Helpers/Money";
 import { numberToText } from "@/Helpers/Text";
 import SubClausula from "../Partials/SubClausula";
 import Clausula from "../Partials/Clausula";
 
 export type Props = {
+    id: number;
     logo?: boolean;
     nombres: string;
     apellidos: string;
@@ -48,6 +49,10 @@ export type Props = {
     rentabilidad: {
         porcentaje: number;
     };
+    user: {
+        codigo: string;
+    };
+    titulo_contrato: string;
 };
 
 const cR = (capital: string, rentabilidad: number) =>
@@ -101,11 +106,14 @@ export default function CortoPlazo(props: Props) {
         moneda,
         banco_gjg,
         rentabilidad,
+        titulo_contrato,
     } = props;
+
+    const paperTitle = `${titulo_contrato}`;
 
     return (
         <div className="space-y-4">
-            <Paper title="CONTRATO N° D19-08-1025 / 2023- GJG" logo={logo}>
+            <Paper title={paperTitle} logo={logo}>
                 <p>
                     Conste por el presente documento, el Contrato de Inversión
                     de Capital con fines de Inversión en ejecución de proyectos
@@ -242,7 +250,7 @@ export default function CortoPlazo(props: Props) {
                     </SubClausula>
                 </Clausula>
             </Paper>
-            <Paper showTitle={false} logo={logo}>
+            <Paper title={paperTitle} showTitle={false} logo={logo}>
                 <Clausula
                     clausula="Quinta"
                     subtitle="OBLIGACIONES Y DERECHOS DE LAS PARTES"
@@ -367,7 +375,7 @@ export default function CortoPlazo(props: Props) {
                 </Clausula>
             </Paper>
 
-            <Paper showTitle={false} logo={logo}>
+            <Paper title={paperTitle} showTitle={false} logo={logo}>
                 <Clausula clausula="Octava" subtitle="RESOLUCIÓN DE CONTRATO">
                     <SubClausula sectionNumber="8.1">
                         En caso de incumplimiento de las obligaciones
@@ -467,7 +475,7 @@ export default function CortoPlazo(props: Props) {
                     </SubClausula>
                 </Clausula>
             </Paper>
-            <Paper logo={logo}>
+            <Paper title={paperTitle} showTitle={false} logo={logo}>
                 <SubClausula sectionNumber="11.2">
                     Las comunicaciones virtuales realizadas durante la ejecución
                     del contrato surtirán efecto desde el día de recibidas en
@@ -562,21 +570,36 @@ export default function CortoPlazo(props: Props) {
                 </section>
             </Paper>
 
-            <Paper logo={logo}>
+            <Paper title={paperTitle} showTitle={false} logo={logo}>
                 <img src={dni_anverso} alt="" />
                 <img src={dni_reverso} alt="" />
             </Paper>
 
             {declaracion_jurada.map((url, index) => (
-                <PaperMedia isImage logo={logo} url={url} key={index} />
+                <PaperImageUrl
+                    title={paperTitle}
+                    logo={logo}
+                    url={url}
+                    key={index}
+                />
             ))}
 
             {sustento_declaracion_jurada.map((url, index) => (
-                <PaperMedia isImage logo={logo} url={url} key={index} />
+                <PaperImageUrl
+                    title={paperTitle}
+                    logo={logo}
+                    url={url}
+                    key={index}
+                />
             ))}
 
             {comprobantes_pago.map((url, index) => (
-                <PaperMedia isImage logo={logo} url={url} key={index} />
+                <PaperImageUrl
+                    title={paperTitle}
+                    logo={logo}
+                    url={url}
+                    key={index}
+                />
             ))}
         </div>
     );

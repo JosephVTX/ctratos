@@ -116,16 +116,18 @@ export default function Create({
             route("contratos.preview"),
             {
                 ...data,
-                departamento: data.departamento.nombre,
-                provincia: data.provincia.nombre,
+                departamento: data.departamento,
+                provincia: data.provincia,
                 tipo_contrato: data.tipo_contrato.nombre,
-
-                rentabilidad:
-                    data.rentabilidad.porcentaje === 0
-                        ? ""
-                        : data.rentabilidad.porcentaje,
-
-                banco_gjg: data.banco_gjg.cuenta,
+    
+                rentabilidad: data.rentabilidad,
+                numero_cuenta_gjg: data.banco_gjg.cuenta,
+                nombre_cuenta_gjg: data.banco_gjg.nombre,
+                vigencia_contrato: data.vigencia_contrato,
+                banco_gjg: {
+                    cuenta: data.banco_gjg.cuenta,
+                    nombre: data.banco_gjg.nombre,
+                }
             },
             {
                 preserveScroll: true,
@@ -136,25 +138,30 @@ export default function Create({
                 },
             }
         );
+
+        /* setOpenModalPreview(true); */
     };
 
     const handleSubmmit = () => {
         const newData = {
             ...data,
-            departamento: data.departamento.nombre,
-            provincia: data.provincia.nombre,
+            departamento: data.departamento,
+            provincia: data.provincia,
             tipo_contrato: data.tipo_contrato.nombre,
 
-            rentabilidad:
-                data.rentabilidad.porcentaje === 0
-                    ? ""
-                    : data.rentabilidad.porcentaje,
-
+            rentabilidad: data.rentabilidad,
             numero_cuenta_gjg: data.banco_gjg.cuenta,
             nombre_cuenta_gjg: data.banco_gjg.nombre,
+            vigencia_contrato: data.vigencia_contrato,
+            banco_gjg: {
+                cuenta: data.banco_gjg.cuenta,
+                nombre: data.banco_gjg.nombre,
+            }
         };
 
-        router.post(route("contratos.store"), newData, {
+        console.log(newData);
+        
+        router.post(route("dashboard.contratos.store"), newData, {
             preserveScroll: true,
             forceFormData: true,
         });
@@ -521,6 +528,7 @@ export default function Create({
                                         currency={
                                             data.moneda === "S/" ? "PEN" : "USD"
                                         }
+                                       
                                     />
                                 </div>
                                 <InputError message={errors.capital} />

@@ -23,15 +23,16 @@ class StoreRequest extends FormRequest
     {
         return [
 
+
             'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
 
             'tipo_doc' => 'required|string|max:255',
             'numero_doc' => 'required|numeric|digits_between:1,15',
 
-            'departamento' => 'required|string|max:255',
-            'provincia' => 'required|string|max:255',
-            'distrito' => 'required|string|max:255',
+            'departamento' => 'required',
+            'provincia' => 'required',
+            'distrito' => 'required',
 
             'direccion' => 'required|string|max:255',
             'correo' => 'required|email|max:255',
@@ -42,10 +43,10 @@ class StoreRequest extends FormRequest
             'ocupacion' => 'required|string|max:155',
             'tipo_contrato' => 'required|string|max:255',
 
-            'rentabilidad' => 'required|string',
+            'rentabilidad' => 'required',
 
 
-            'vigencia_contrato' => 'required|string',
+            'vigencia_contrato' => 'required',
 
             'moneda' => 'required|string|max:255',
 
@@ -63,8 +64,7 @@ class StoreRequest extends FormRequest
 
             'numero_cci_cliente' => 'required|numeric|digits_between:1,15',
 
-            'numero_cuenta_gjg' => 'required|numeric|digits_between:1,15',
-            'nombre_cuenta_gjg' => 'required|string|max:255',
+            'banco_gjg' => 'required',
 
             'dni_anverso' => 'required|mimes:jpeg,png,jpg|max:2048',
 

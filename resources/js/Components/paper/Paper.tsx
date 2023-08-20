@@ -1,9 +1,9 @@
 import React from "react";
 
 type Props = {
+    title?: string;
     children: React.ReactNode;
     logo?: boolean;
-    title?: string;
     showTitle?: boolean;
 };
 export default function Paper({
@@ -31,7 +31,7 @@ export default function Paper({
                 className={`absolute -bottom-48 -left-48 z-[5] opacity-25 ${
                     logo ? "visible" : "invisible"
                 }`}
-                alt=""
+                alt="Logo"
             />
             <div className="flex justify-between mb-[20px] items-center">
                 <img
@@ -39,12 +39,12 @@ export default function Paper({
                     className={`h-[70px] ${logo ? "visible" : "invisible"}`}
                     alt="GJG LOGO"
                 />
-                <p className="font-bold">
-                    CONTRATO N° D09-06-003-MP / 2023- GJG
-                </p>
+                <div className="font-bold">
+                    {title}
+                </div>
             </div>
 
-            {title && <h4 className="text-center font-black">{title}</h4>}
+            {showTitle && <h4 className="text-center font-black">{title}</h4>}
 
             {children}
         </div>

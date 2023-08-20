@@ -1,5 +1,5 @@
 const contratoFormData = {
-    nombres: "",
+    nombres: "Joseph",
     apellidos: "Vega Callupe",
     tipo_doc: "dni",
     numero_doc: "76553808",
@@ -22,7 +22,7 @@ const contratoFormData = {
         porcentaje: 0,
     },
     vigencia_contrato: "",
-    moneda: "",
+    moneda: "S/",
     capital: "",
     fecha_inicio: "",
     fecha_fin: "",

@@ -11,3 +11,6 @@ declare global {
     var Ziggy: ZiggyConfig;
     var routeName: string;
 }
+declare global {
+    export type SVGGraphics = any;
+}

@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\User;
 use App\Policies\UserPolicy;
 use Illuminate\Support\ServiceProvider;
+use Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+        
     }
 
     /**
@@ -27,5 +29,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+
+        Validator::extend('same_length', function ($attribute, $value, $parameters, $validator) {
+            $otherField = $parameters[0];
+
+            return strlen($value) === strlen($validator->getData()[$otherField]);
+        });
     }
 }

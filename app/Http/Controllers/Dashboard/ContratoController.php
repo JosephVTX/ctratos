@@ -87,9 +87,6 @@ class ContratoController extends Controller
             'declaracion_jurada' => $declaracion_jurada,
             'sustento_declaracion_jurada' => $sustento_declaracion_jurada,
             'comprobantes_pago' => $comprobantes_pago,
-            'banco_gjg' => $request->banco_gjg,
-            'dni_anverso' => $dni_anverso,
-            'dni_reverso' => $dni_reverso,
         ]));
 
         return to_route("dashboard.contratos.index");
@@ -112,9 +109,14 @@ class ContratoController extends Controller
             'monto' => $request->monto,
         ], [
             'fecha' => 'required|date|after:today',
-            'monto' => 'required|numeric',
+            'monto' => 'required',
 
+        ], [
+
+            'fecha.after' => 'La fecha debe ser mayor a la fecha actual',
+        
         ])->validate();
+        
 
         to_route("dashboard.contratos.create");
     }

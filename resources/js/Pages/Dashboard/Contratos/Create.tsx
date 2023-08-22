@@ -5,6 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
+import { Checkbox } from "primereact/checkbox";
 import { useEffect, useState } from "react";
 import { InputSwitch } from "primereact/inputswitch";
 import InputError from "@/Components/InputError";
@@ -20,57 +21,8 @@ import {
     bancoGJGSolesOptions,
     generoOptions,
 } from "./data/form";
-
-type Props = {
-    departamentos: [
-        {
-            id: number;
-            nombre: string;
-        }
-    ];
-
-    provincias: [
-        {
-            id: number;
-            nombre: string;
-            departamento_id: number;
-        }
-    ];
-
-    distritos: [
-        {
-            id: number;
-            nombre: string;
-            provincia_id: number;
-        }
-    ];
-
-    tipo_contratos: [
-        {
-            id: number;
-            nombre: string;
-        }
-    ];
-
-    rentabilidades: [
-        {
-            id: number;
-
-            porcentaje: number;
-
-            tipo_contrato_id: number;
-        }
-    ];
-
-    vigencia_contratos: [
-        {
-            id: number;
-            cantidad: number;
-            unidad: string;
-            rentabilidad_id: number;
-        }
-    ];
-};
+import ComprobantePago from "./partials/ComprobantePago";
+import DatosCliente from "./partials/DatosCliente";
 
 export default function Create({
     departamentos,
@@ -88,9 +40,10 @@ export default function Create({
     const { data, setData } = useForm({
         ...contratoFormData,
         tipo_contrato: tipo_contratos[0],
+        comprobantes_pago_codigo_operacion: [] as string[],
     });
 
-    const [cronograma, setCronograma] = useState({});
+    const [cronograma, setCronograma] = useState<Cronograma | any>({});
     const [cronogramas, setCronogramas] = useState<any[]>([]);
 
     useEffect(() => {
@@ -102,24 +55,67 @@ export default function Create({
     }, [openModalPreview]);
 
     const handleAddCronograma = () => {
+        console.log(data?.vigencia_contrato.cantidad);
+
+        if (!data.vigencia_contrato.cantidad)
+            return alert("No hay vigencia de contrato");
+
+        const cantidad = data.vigencia_contrato?.cantidad;
+
+        const newCronograma = Array.from({ length: cantidad }, (_, i) => {
+            const date = new Date(cronograma?.fecha);
+
+            date.setMonth(date.getMonth() + i + 1);
+
+            if (i + 1 === cantidad) {
+                return {
+                    fecha: date.toISOString().split("T")[0],
+
+                    monto: data.capital,
+                };
+            }
+
+            return {
+                fecha: date.toISOString().split("T")[0],
+
+                monto: cronograma?.monto,
+            };
+        });
+
         router.post(route("contratos.cronograma"), cronograma, {
             preserveScroll: true,
 
             onSuccess: () => {
-                setCronogramas([...cronogramas, cronograma]);
+                setCronogramas([...cronogramas, ...newCronograma]);
             },
         });
     };
 
     const handlePreview = () => {
+        console.log({
+            ...data,
+            departamento: data.departamento.nombre,
+            provincia: data.provincia.nombre,
+            tipo_contrato: data.tipo_contrato.nombre,
+
+            rentabilidad: data.rentabilidad,
+            numero_cuenta_gjg: data.banco_gjg.cuenta,
+            nombre_cuenta_gjg: data.banco_gjg.nombre,
+            vigencia_contrato: data.vigencia_contrato,
+            banco_gjg: {
+                cuenta: data.banco_gjg.cuenta,
+                nombre: data.banco_gjg.nombre,
+            },
+        });
+
         router.post(
             route("contratos.preview"),
             {
                 ...data,
-                departamento: data.departamento,
-                provincia: data.provincia,
+                departamento: data.departamento.nombre,
+                provincia: data.provincia.nombre,
                 tipo_contrato: data.tipo_contrato.nombre,
-    
+
                 rentabilidad: data.rentabilidad,
                 numero_cuenta_gjg: data.banco_gjg.cuenta,
                 nombre_cuenta_gjg: data.banco_gjg.nombre,
@@ -127,7 +123,7 @@ export default function Create({
                 banco_gjg: {
                     cuenta: data.banco_gjg.cuenta,
                     nombre: data.banco_gjg.nombre,
-                }
+                },
             },
             {
                 preserveScroll: true,
@@ -138,17 +134,18 @@ export default function Create({
                 },
             }
         );
-
-        /* setOpenModalPreview(true); */
     };
 
     const handleSubmmit = () => {
         const newData = {
             ...data,
-            departamento: data.departamento,
-            provincia: data.provincia,
+            departamento: data.departamento.nombre,
+            provincia: data.provincia.nombre,
             tipo_contrato: data.tipo_contrato.nombre,
-
+            tiene_factura: data.tiene_factura,
+            comprobantes_pago: data.comprobantes_pago,
+            comprobantes_pago_codigo_operacion:
+                data.comprobantes_pago_codigo_operacion,
             rentabilidad: data.rentabilidad,
             numero_cuenta_gjg: data.banco_gjg.cuenta,
             nombre_cuenta_gjg: data.banco_gjg.nombre,
@@ -156,11 +153,9 @@ export default function Create({
             banco_gjg: {
                 cuenta: data.banco_gjg.cuenta,
                 nombre: data.banco_gjg.nombre,
-            }
+            },
         };
 
-        console.log(newData);
-        
         router.post(route("dashboard.contratos.store"), newData, {
             preserveScroll: true,
             forceFormData: true,
@@ -188,214 +183,10 @@ export default function Create({
     return (
         <>
             <AuthenticatedLayout headTitle="Crear Contrato">
-                <div className="space-y-8 pb-8">
-                    <Section title="Datos del Cliente">
-                        <section className="lg:grid grid-cols-4 [&_input]:w-full gap-4">
-                            <InputForm
-                                id="nombres"
-                                title="Nombres"
-                                value={data.nombres}
-                                onChange={(e) =>
-                                    setData("nombres", e.target.value)
-                                }
-                                error={errors.nombres}
-                            />
-
-                            <InputForm
-                                title="Apellidos"
-                                id="apellidos"
-                                value={data.apellidos}
-                                onChange={(e) =>
-                                    setData("apellidos", e.target.value)
-                                }
-                                error={errors.apellidos}
-                            />
-                            <InputForm
-                                title="Tipo de Documento"
-                                id="tipo_doc"
-                                error={errors.tipo_doc}
-                            >
-                                <Dropdown
-                                    inputId="tipo_doc"
-                                    className="w-full"
-                                    value={data.tipo_doc}
-                                    options={typeDocumentOptions}
-                                    optionValue="value"
-                                    optionLabel="label"
-                                    onChange={(e) =>
-                                        setData("tipo_doc", e.target.value)
-                                    }
-                                    placeholder="Seleccione"
-                                />
-                            </InputForm>
-                            <InputForm
-                                title="Nº de Doc"
-                                id="numero_doc"
-                                value={data.numero_doc}
-                                onChange={(e) =>
-                                    setData("numero_doc", e.target.value)
-                                }
-                                error={errors.numero_doc}
-                                keyfilter={"int"}
-                                maxLength={
-                                    data.tipo_doc === "dni"
-                                        ? 8
-                                        : data.tipo_doc === "ce"
-                                        ? 15
-                                        : 12
-                                }
-                            />
-                        </section>
-                        <section className="lg:grid grid-cols-4 [&_input]:w-full gap-4">
-                            <InputForm
-                                title="Departamento"
-                                id="departamento"
-                                error={errors.departamento}
-                            >
-                                <Dropdown
-                                    inputId="departamento"
-                                    filter
-                                    className="w-full"
-                                    value={data.departamento}
-                                    options={departamentos}
-                                    optionLabel="nombre"
-                                    onChange={(e) =>
-                                        setData("departamento", e.target.value)
-                                    }
-                                    placeholder="Seleccione"
-                                />
-                            </InputForm>
-
-                            <InputForm
-                                title="Provincia"
-                                id="provincia"
-                                error={errors.provincia}
-                            >
-                                <Dropdown
-                                    filter
-                                    inputId="provincia"
-                                    className="w-full"
-                                    value={data.provincia}
-                                    disabled={!data.departamento.id}
-                                    options={provincias.filter(
-                                        (p) =>
-                                            p.departamento_id ===
-                                            data.departamento.id
-                                    )}
-                                    optionLabel="nombre"
-                                    onChange={(e) =>
-                                        setData("provincia", e.target.value)
-                                    }
-                                    placeholder="Seleccione"
-                                />
-                            </InputForm>
-
-                            <InputForm
-                                title="Distrito"
-                                id="distrito"
-                                error={errors.distrito}
-                            >
-                                <Dropdown
-                                    inputId="distrito"
-                                    filter
-                                    className="w-full"
-                                    disabled={!data.provincia.id}
-                                    value={data.distrito}
-                                    options={distritos.filter(
-                                        (d) =>
-                                            d.provincia_id === data.provincia.id
-                                    )}
-                                    optionLabel="nombre"
-                                    optionValue="nombre"
-                                    onChange={(e) =>
-                                        setData("distrito", e.target.value)
-                                    }
-                                    placeholder="Seleccione"
-                                />
-                            </InputForm>
-                            <InputForm
-                                title="Dirección"
-                                id="direccion"
-                                value={data.direccion}
-                                onChange={(e) =>
-                                    setData("direccion", e.target.value)
-                                }
-                                error={errors.direccion}
-                            />
-                        </section>
-
-                        <section className="lg:grid grid-cols-4 [&_input]:w-full gap-4">
-                            <InputForm
-                                id="correo"
-                                title="Correo"
-                                value={data.correo}
-                                onChange={(e) =>
-                                    setData("correo", e.target.value)
-                                }
-                                error={errors.correo}
-                            />
-
-                            <InputForm
-                                id="celular"
-                                title="Celular"
-                                value={data.celular}
-                                onChange={(e) =>
-                                    setData("celular", e.target.value)
-                                }
-                                error={errors.celular}
-                            />
-
-                            <InputForm
-                                id="genero"
-                                title="Genero del Cliente"
-                                error={errors.genero}
-                            >
-                                <Dropdown
-                                    inputId="genero"
-                                    className="w-full"
-                                    value={data.genero}
-                                    options={generoOptions}
-                                    optionValue="value"
-                                    optionLabel="label"
-                                    onChange={(e) =>
-                                        setData("genero", e.target.value)
-                                    }
-                                    placeholder="Seleccione"
-                                />
-                            </InputForm>
-
-                            <InputForm
-                                title="Ocupación"
-                                id="ocupacion"
-                                error={errors.ocupacion}
-                                value={data.ocupacion}
-                                onChange={(e) =>
-                                    setData("ocupacion", e.target.value)
-                                }
-                            />
-                        </section>
-                    </Section>
+                <div className="space-y-8 pb-12">
+                    <DatosCliente data={data} setData={setData} errors={errors} departamentos={departamentos} distritos={distritos} provincias={provincias} />
                     <Section title="Opciones de Contrato">
                         <section className="lg:grid grid-cols-4 [&_input]:w-full gap-4">
-                            {/*  <div>
-                                <InputLabel
-                                    value="Tipo de Contrato"
-                                    htmlFor="tipo_contrato"
-                                />
-                                <Dropdown
-                                    inputId="tipo_contrato"
-                                    className="w-full"
-                                    value={data.tipo_contrato}
-                                    options={tipo_contratos}
-                                    optionLabel="nombre"
-                                    onChange={(e) =>
-                                        setData("tipo_contrato", e.target.value)
-                                    }
-                                    placeholder="Seleccione"
-                                />
-                                <InputError message={errors.tipo_contrato} />
-                            </div> */}
-
                             <InputForm
                                 id="tipo_contrato"
                                 title="Tipo de Contrato"
@@ -528,11 +319,22 @@ export default function Create({
                                         currency={
                                             data.moneda === "S/" ? "PEN" : "USD"
                                         }
-                                       
                                     />
                                 </div>
                                 <InputError message={errors.capital} />
                             </div>
+                            {/* <div>
+                                <InputForm
+                                    id="fecha_inicio"
+                                    title="Fecha Inicio"
+                                    type="date"
+                                    error={errors.fecha_inicio}
+                                    value={data.fecha_inicio}
+                                    onChange={(e) =>
+                                        setData("fecha_inicio", e.target.value)
+                                    }
+                                />
+                            </div> */}
                         </section>
 
                         <section className="lg:grid grid-cols-4 [&_input]:w-full gap-4">
@@ -557,6 +359,29 @@ export default function Create({
                                     setData("fecha_fin", e.target.value)
                                 }
                             />
+                            <InputForm
+                                id="fecha_venta"
+                                title="Fecha Venta del Contrato"
+                                type="date"
+                                error={errors.fecha_venta}
+                                value={data.fecha_venta}
+                                onChange={(e) =>
+                                    setData("fecha_venta", e.target.value)
+                                }
+                            />
+                            <InputForm id="tiene_venta" title="Tiene Factura">
+                                <div className="pt-3">
+                                    <InputSwitch
+                                        checked={data.tiene_factura}
+                                        onChange={(e) =>
+                                            setData(
+                                                "tiene_factura",
+                                                e.value as boolean
+                                            )
+                                        }
+                                    />
+                                </div>
+                            </InputForm>
                         </section>
                     </Section>
 
@@ -582,28 +407,34 @@ export default function Create({
                                         <InputError message={errors.fecha} />
                                     </div>
                                     <div>
-                                        <InputNumber
-                                            inputId="currency-us"
-                                            mode="currency"
-                                            currency={
-                                                data.moneda === "S/"
-                                                    ? "PEN"
-                                                    : "USD"
-                                            }
-                                            locale={
-                                                data.moneda === "S/"
-                                                    ? "es-PE"
-                                                    : "en-US"
-                                            }
-                                            className="w-full my-4"
-                                            placeholder="Monto Mensual a Recibir"
-                                            onChange={(e) =>
-                                                setCronograma({
-                                                    ...cronograma,
-                                                    monto: e.value,
-                                                })
-                                            }
-                                        />
+                                        <InputForm
+                                            title="Monto"
+                                            id="monto"
+                                            error={errors.monto}
+                                        >
+                                            <InputNumber
+                                                inputId="currency-us"
+                                                mode="currency"
+                                                currency={
+                                                    data.moneda === "S/"
+                                                        ? "PEN"
+                                                        : "USD"
+                                                }
+                                                locale={
+                                                    data.moneda === "S/"
+                                                        ? "es-PE"
+                                                        : "en-US"
+                                                }
+                                                className="w-full my-4"
+                                                placeholder="Monto Mensual a Recibir"
+                                                onChange={(e) =>
+                                                    setCronograma({
+                                                        ...cronograma,
+                                                        monto: e.value,
+                                                    })
+                                                }
+                                            />
+                                        </InputForm>
 
                                         <Button
                                             onClick={handleAddCronograma}
@@ -724,32 +555,6 @@ export default function Create({
                     </Section>
                     <Section title="Datos cuenta - GJG">
                         <section className="lg:grid grid-cols-4 [&_input]:w-full gap-4">
-                            {/* <div>
-                                <InputLabel
-                                    value={`Banco GJG ${
-                                        data.moneda === "S/"
-                                            ? "Soles"
-                                            : "Dólares"
-                                    }`}
-                                    id="bank"
-                                />
-                                <Dropdown
-                                    className="w-full"
-                                    value={data.banco_gjg}
-                                    options={
-                                        data.moneda === "S/"
-                                            ? bancoGJGSolesOptions
-                                            : bancoGJGDolaresOptions
-                                    }
-                                    optionLabel="nombre"
-                                    onChange={(e) =>
-                                        setData("banco_gjg", e.value)
-                                    }
-                                    placeholder="Seleccione"
-                                />
-                                <InputError message={errors.banco_gjg} />
-                            </div> */}
-
                             <InputForm
                                 id="banco_gjg"
                                 title={`Banco GJG ${
@@ -812,6 +617,7 @@ export default function Create({
                                 />
                                 <InputError message={errors.dni_anverso} />
                             </div>
+
                             <div>
                                 <InputLabel
                                     value="DNI Reverso"
@@ -830,6 +636,39 @@ export default function Create({
                                     accept="image/jpeg,jpg,png,webp"
                                 />
                                 <InputError message={errors.dni_reverso} />
+                            </div>
+                            <div>
+                                <div className="flex justify-between">
+                                    <label htmlFor="comprobantes_pago">
+                                        Comprobantes de Pago
+                                    </label>
+                                    <ComprobantePago
+                                        setData={setData}
+                                        errors={errors}
+                                        data={data}
+                                        comprobantes_pago={
+                                            data.comprobantes_pago
+                                        }
+                                        comprobantes_pago_codigo_operacion={
+                                            data.comprobantes_pago_codigo_operacion
+                                        }
+                                    />
+                                </div>
+                                <InputText
+                                    id="comprobantes_pago"
+                                    name="comprobantes_pago"
+                                    onChange={(e) =>
+                                        setData("comprobantes_pago", [
+                                            ...e.target.files!,
+                                        ])
+                                    }
+                                    type="file"
+                                    accept=".png,.jpg,.jpeg,.webp, .pdf"
+                                    multiple
+                                />
+                                <InputError
+                                    message={errors.comprobantes_pago}
+                                />
                             </div>
                             <div>
                                 <InputLabel
@@ -871,29 +710,6 @@ export default function Create({
                                 />
                                 <InputError
                                     message={errors.sustento_declaracion_jurada}
-                                />
-                            </div>
-                        </section>
-                        <section className="grid grid-cols-2 [&_input]:w-full gap-4">
-                            <div>
-                                <InputLabel
-                                    value="Comprobantes de Pago"
-                                    htmlFor="comprobantes_pago"
-                                />
-                                <InputText
-                                    id="comprobantes_pago"
-                                    name="comprobantes_pago"
-                                    onChange={(e) =>
-                                        setData("comprobantes_pago", [
-                                            ...e.target.files!,
-                                        ])
-                                    }
-                                    type="file"
-                                    accept=".png,.jpg,.jpeg,.webp, .pdf"
-                                    multiple
-                                />
-                                <InputError
-                                    message={errors.comprobantes_pago}
                                 />
                             </div>
                         </section>

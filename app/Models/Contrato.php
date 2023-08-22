@@ -10,6 +10,7 @@ class Contrato extends Model
     use HasFactory;
 
     protected $fillable = [
+
         'user_id',
         'area_id',
         'nombres',
@@ -31,30 +32,33 @@ class Contrato extends Model
         'capital',
         'fecha_inicio',
         'fecha_fin',
+        'fecha_venta',
+        'tiene_factura',
         'banco_cliente',
         'tipo_cuenta_cliente',
         'numero_cuenta_cliente',
         'numero_cci_cliente',
-        'banco_gjg',
         'dni_anverso',
         'dni_reverso',
+        'banco_gjg',
         'declaracion_jurada',
         'sustento_declaracion_jurada',
         'comprobantes_pago',
+        'comprobantes_pago_codigo_operacion',
+        'cronograma',
         'estado',
     ];
 
 
     protected $casts = [
+        'rentabilidad' => 'array',
+        'vigencia_contrato' => 'array',
+        'banco_gjg' => 'array',
         'declaracion_jurada' => 'array',
         'sustento_declaracion_jurada' => 'array',
         'comprobantes_pago' => 'array',
-        'departamento' => 'array',
-        'provincia' => 'array',
-        'banco_gjg' => 'array',
-        'rentabilidad' => 'array',
-        'vigencia_contrato' => 'array',
-
+        'comprobantes_pago_codigo_operacion' => 'array',
+        'cronograma' => 'array',
     ];
 
     protected $appends = ['created_at', 'titulo_contrato'];
@@ -66,11 +70,23 @@ class Contrato extends Model
 
 
     public function getTituloContratoAttribute()
-    {   
+    {
         $month = date('m', strtotime($this->attributes['created_at']));
         $year = date('Y', strtotime($this->attributes['created_at']));
-        return $this->user->codigo.'-'.$month.'-'.$this->id. ' / ' . $year.'-'.'GJG';
+        return 'CONTRATO N° ' . $this->user->codigo . '-' . $month . '-' . $this->id . ' / ' . $year . '-' . 'GJG';
     }
+
+    public function getFechaInicioAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->format('d/m/Y');
+    }
+
+    public function getFechaFinAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->format('d/m/Y');
+    }
+
+
 
     public function getContratos()
     {

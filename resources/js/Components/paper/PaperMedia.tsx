@@ -14,7 +14,7 @@ type Props = {
     title?: string;
 };
 
-const Pdf = ({ url, file, logo, title }: Props) => {
+export const Pdf = ({ url, file, logo, title }: Props) => {
     const [pages, setPages] = useState<Array<JSX.Element>>([]);
     const loadPDF = async () => {
         const loadingTask = pdfjs.getDocument(
@@ -51,6 +51,8 @@ const Pdf = ({ url, file, logo, title }: Props) => {
     return pages;
 };
 
+
+
 const Image = ({ url, file, logo, title }: Props) => {
     return (
         <Paper showTitle={false} title={title} logo={logo}>
@@ -77,13 +79,22 @@ export default function PaperMedia({
     );
 }
 
-const PaperImageUrl = ({ url, title }: Props) => {
+const PaperMediaUrl = ({ url, title, logo }: Props) => {
+    const isPdf = url?.endsWith(".pdf");
+
     return (
-        <Paper showTitle={false} title={title} logo={false}>
-            <img src={url} alt="Paper Image Url" />
-        </Paper>
+        <>
+            {isPdf ? (
+                <>
+                    <Pdf url={url} title={title} logo={logo} />
+                </>
+            ) : (
+                <Paper showTitle={false} title={title} logo={logo}>
+                    <img src={url} alt="Paper Image Url" />
+                </Paper>
+            )}
+        </>
     );
 };
 
-
-export { PaperImageUrl };
+export { PaperMediaUrl };

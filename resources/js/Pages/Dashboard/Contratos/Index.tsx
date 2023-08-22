@@ -7,7 +7,7 @@ import useSearch from "@/Hooks/useSearch";
 import { Button } from "primereact/button";
 import { router } from "@inertiajs/react";
 import { Dialog } from "primereact/dialog";
-import { useState } from "react";
+import React, { useState } from "react";
 import CortoPlazo, { Props } from "@/Templates/Contratos/Show/CortoPlazo";
 import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
@@ -16,7 +16,8 @@ import { useRef } from "react";
 
 import { Tag } from "primereact/tag";
 import { InputSwitch } from "primereact/inputswitch";
-import Can from "@/Components/protect/Can";
+import Can, { CanFn } from "@/Components/protect/Can";
+import MedianoPlazo from "@/Templates/Contratos/Show/MedianoPlazo";
 
 const getSeverity = (status) => {
     switch (status) {
@@ -228,10 +229,17 @@ export default function Index({ contratos }) {
     };
     const headerDialog = () => {
         return (
-            <InputSwitch
-                checked={withLogo}
-                onChange={(e) => setWithLogo(e!.value as boolean)}
-            />
+            <div className="flex items-center gap-8">
+                <InputSwitch
+                    checked={withLogo}
+                    onChange={(e) => setWithLogo(e!.value as boolean)}
+                />
+
+                <h4 className="opacity-80">
+                    Contrato de {currentContrato?.tipo_contrato} con{" "}
+                    {withLogo ? "Logo" : "Sin Logo"}
+                </h4>
+            </div>
         );
     };
 
@@ -282,8 +290,16 @@ export default function Index({ contratos }) {
                         body={estadoBodyTemplate}
                         rowEditor={false}
                     />
-                    <Column body={docLogoAction} header="Documento con Logo" />
-                    <Column body={docAction} header="Documento sin Logo" />
+
+                    {CanFn({ value: "dashboard.contratos.edit" }) && (
+                        <Column
+                            body={docLogoAction}
+                            header="Documento con Logo"
+                        />
+                    )}
+                    {CanFn({ value: "dashboard.contratos.edit" }) && (
+                        <Column body={docAction} header="Documento sin Logo" />
+                    )}
                 </DataTable>
             </AuthenticatedLayout>
 
@@ -295,10 +311,15 @@ export default function Index({ contratos }) {
                 onHide={() => setOpenDialog(false)}
                 footer={footerDialog}
             >
-                {currentContrato && (
+                {currentContrato?.tipo_contrato === "Corto Plazo" ? (
                     <CortoPlazo
                         logo={withLogo}
                         {...(currentContrato as Props)}
+                    />
+                ) : (
+                    <MedianoPlazo
+                        logo={withLogo}
+                        {...(currentContrato as any)}
                     />
                 )}
             </Dialog>

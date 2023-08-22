@@ -119,8 +119,8 @@ namespace App\Models{
  * @property string $apellidos
  * @property string $tipo_doc
  * @property string $numero_doc
- * @property array $departamento
- * @property array $provincia
+ * @property string $departamento
+ * @property string $provincia
  * @property string $distrito
  * @property string $direccion
  * @property string $correo
@@ -134,6 +134,8 @@ namespace App\Models{
  * @property string $capital
  * @property string $fecha_inicio
  * @property string $fecha_fin
+ * @property string $fecha_venta
+ * @property int $tiene_factura
  * @property string $banco_cliente
  * @property string $tipo_cuenta_cliente
  * @property string $numero_cuenta_cliente
@@ -144,6 +146,8 @@ namespace App\Models{
  * @property array $declaracion_jurada
  * @property array $sustento_declaracion_jurada
  * @property array $comprobantes_pago
+ * @property array $comprobantes_pago_codigo_operacion
+ * @property array|null $cronograma
  * @property string $estado
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -161,8 +165,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereCapital($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereCelular($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereComprobantesPago($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereComprobantesPagoCodigoOperacion($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereCorreo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereCronograma($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereDeclaracionJurada($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereDepartamento($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereDireccion($value)
@@ -172,6 +178,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereEstado($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereFechaFin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereFechaInicio($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereFechaVenta($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereGenero($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereMoneda($value)
@@ -183,6 +190,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereProvincia($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereRentabilidad($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereSustentoDeclaracionJurada($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereTieneFactura($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereTipoContrato($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereTipoCuentaCliente($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contrato whereTipoDoc($value)

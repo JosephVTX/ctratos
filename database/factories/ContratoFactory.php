@@ -60,14 +60,8 @@ class ContratoFactory extends Factory
             'apellidos' => $this->faker->lastName(),
             'tipo_doc' => $this->faker->randomElement(['DNI', 'CE', 'RUC']),
             'numero_doc' => $this->faker->randomNumber(8),
-            'departamento' => [
-                'id' => $this->faker->randomNumber(2),
-                'nombre' => $this->faker->randomElement(['LIMA', 'ICA', 'AREQUIPA']),
-            ],
-            'provincia' => [
-                'id' => $this->faker->randomNumber(2),
-                'nombre' => $this->faker->randomElement(['LIMA', 'ICA', 'AREQUIPA']),
-            ],
+            'departamento' => $this->faker->randomElement(['LIMA', 'ICA', 'AREQUIPA']),
+            'provincia' => $this->faker->randomElement(['LIMA', 'ICA', 'AREQUIPA']),
             'distrito' => $this->faker->randomElement(['LIMA', 'ICA', 'AREQUIPA']),
             'direccion' => $this->faker->address(),
             'correo' => $this->faker->email(),
@@ -80,6 +74,8 @@ class ContratoFactory extends Factory
                 'porcentaje' => $this->faker->randomNumber(2),
                 
             ],
+            'fecha_venta' => $this->faker->date(),
+            'tiene_factura' => $this->faker->boolean(),
 
             'vigencia_contrato' => [
                 'id' => $this->faker->randomNumber(2),
@@ -116,6 +112,12 @@ class ContratoFactory extends Factory
                 $this->faker->imageUrl(),
                 $this->faker->imageUrl(),
                 $this->faker->imageUrl(),
+            ],
+
+            'comprobantes_pago_codigo_operacion' => [
+                $this->faker->randomNumber(8),
+                $this->faker->randomNumber(8),
+                $this->faker->randomNumber(8),
             ],
             
         ];

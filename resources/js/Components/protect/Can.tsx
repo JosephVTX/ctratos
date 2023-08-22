@@ -10,5 +10,14 @@ type Props = {
 export default function Can({ value, children }: Props) {
     const { permissions } = usePage<PageProps>().props;
 
-    return <>{permissions.includes(value) ? children : null}</>;
+    return permissions.includes(value) ? children : null;
 }
+
+const CanFn = ({ value}: { value: string }) => {
+    
+    const { permissions } = usePage<PageProps>().props;
+
+    return permissions.includes(value);
+};
+
+export { CanFn };

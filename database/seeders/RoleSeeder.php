@@ -42,8 +42,8 @@ class RoleSeeder extends Seeder
 
 
         Permission::create(['name' => 'dashboard.contratos.index'])->syncRoles(['God',  'Supervisor', 'Usuario']);
-        Permission::create(['name' => 'dashboard.contratos.create'])->syncRoles(['Tecnico', 'Supervisor', 'Usuario']);
-        Permission::create(['name' => 'dashboard.contratos.edit'])->syncRoles(['God', 'Tecnico', 'Supervisor']);
+        Permission::create(['name' => 'dashboard.contratos.create'])->syncRoles(['Supervisor', 'Usuario']);
+        Permission::create(['name' => 'dashboard.contratos.edit'])->syncRoles(['Supervisor']);
         Permission::create(['name' => 'dashboard.contratos.destroy'])->syncRoles(['God', 'Tecnico', 'Supervisor']);
 
         Permission::create(['name' => 'dashboard.users.index'])->syncRoles(['God', 'Tecnico']);

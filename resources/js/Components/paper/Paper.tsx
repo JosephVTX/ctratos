@@ -13,7 +13,7 @@ export default function Paper({
     showTitle = true,
 }: Props) {
     return (
-        <div className="w-[900px] mx-auto px-20 pt-10 py-16 text-[13px] h-[1300px] [&_span]:uppercase text-justify space-y-6 relative overflow-hidden border bg-white">
+        <div className="w-[900px] mx-auto px-20 pt-6 py-16 text-[13px] h-[1300px] [&_span]:uppercase text-justify space-y-6 relative overflow-hidden border bg-white">
             <div
                 className={`w-[738px] -translate-x-1/2 left-1/2 absolute bottom-10 ${
                     logo ? "visible" : "invisible"
@@ -39,9 +39,7 @@ export default function Paper({
                     className={`h-[70px] ${logo ? "visible" : "invisible"}`}
                     alt="GJG LOGO"
                 />
-                <div className="font-bold">
-                    {title}
-                </div>
+                <div className="font-bold">{title}</div>
             </div>
 
             {showTitle && <h4 className="text-center font-black">{title}</h4>}

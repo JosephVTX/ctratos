@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('apellidos', 64);
             $table->string('tipo_doc', 8);
             $table->string('numero_doc', 16);
-            $table->json('departamento', 32);
-            $table->json('provincia', 64);
+            $table->string('departamento', 32);
+            $table->string('provincia', 64);
             $table->string('distrito', 64);
             $table->string('direccion', 128);
             $table->string('correo', 128);
@@ -40,6 +40,8 @@ return new class extends Migration
             $table->string('capital', 16);
             $table->string('fecha_inicio', 16);
             $table->string('fecha_fin', 16);
+            $table->string('fecha_venta', 16);
+            $table->boolean('tiene_factura')->default(false);
             $table->string('banco_cliente', 32);
             $table->string('tipo_cuenta_cliente', 32);
             $table->string('numero_cuenta_cliente', 32);
@@ -50,6 +52,8 @@ return new class extends Migration
             $table->json('declaracion_jurada');
             $table->json('sustento_declaracion_jurada');
             $table->json('comprobantes_pago');
+            $table->json('comprobantes_pago_codigo_operacion');
+            $table->json('cronograma')->nullable();
             $table->enum('estado', ['Revision', 'Aprobado', 'Rechazado'])->default('Revision');
             $table->timestamps();
         });

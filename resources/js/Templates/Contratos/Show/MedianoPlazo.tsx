@@ -62,13 +62,6 @@ export type Props = {
     ];
 };
 
-const cR = (capital: string, rentabilidad: number) =>
-    parseInt(capital) * (rentabilidad / 100) + parseInt(capital);
-
-const Miss = ({ title }: { title: string }) => (
-    <span className="text-red-500 text-lg underline">{title}</span>
-);
-
 const dateToText = (date: string) => {
     const mesesNombres = [
         "Enero",
@@ -93,23 +86,11 @@ const dateToText = (date: string) => {
     return `${day} de ${mesesNombres[month]} del ${year}`;
 };
 
-const formatDay = (day: string) => {
-    const f = numberToText(day);
-
-    const capilatized = f
-        .split(" ")
-        .map((word) => {
-            return word[0].toUpperCase() + word.slice(1);
-        })
-        .join(" ");
-
-    return capilatized;
-};
-const textGender = (genero: string) => {
+export const textGender = (genero: string) => {
     return genero === "masculino" ? "el señor" : "la señora";
 };
 
-const textByGender = (genero: string, text: string[]): string => {
+export const textByGender = (genero: string, text: string[]): string => {
     return genero === "masculino" ? text[0] : text[1];
 };
 
@@ -267,7 +248,7 @@ export default function MedianoPlazo(props: Props) {
                     </SubClausula>
                 </Clausula>
 
-                {cronograma.length > 0 && (
+                {cronograma?.length > 0 && (
                     <div>
                         <table className="mx-auto text-[13px]">
                             <tbody>

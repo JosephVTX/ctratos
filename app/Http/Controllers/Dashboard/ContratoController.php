@@ -58,7 +58,7 @@ class ContratoController extends Controller
     public function store(StoreRequest $request)
     {
 
-        /* dd($request->all()); */
+        /* dd($request->all());  */
 
 
         $declaracion_jurada = [];
@@ -87,6 +87,8 @@ class ContratoController extends Controller
             'declaracion_jurada' => $declaracion_jurada,
             'sustento_declaracion_jurada' => $sustento_declaracion_jurada,
             'comprobantes_pago' => $comprobantes_pago,
+            'dni_anverso' => $dni_anverso,
+            'dni_reverso' => $dni_reverso,
         ]));
 
         return to_route("dashboard.contratos.index");

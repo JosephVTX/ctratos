@@ -55,4 +55,8 @@
 
     });
 
+    Route::get('test', function () {
+        return Inertia::render('Test');
+    });
+
     require __DIR__ . '/auth.php';

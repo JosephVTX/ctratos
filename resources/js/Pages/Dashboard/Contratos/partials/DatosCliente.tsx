@@ -56,8 +56,8 @@ export default function DatosCliente({
                         data.tipo_doc === "dni"
                             ? 8
                             : data.tipo_doc === "ce"
-                            ? 15
-                            : 12
+                                ? 15
+                                : 12
                     }
                 />
             </section>
@@ -91,9 +91,9 @@ export default function DatosCliente({
                         inputId="provincia"
                         className="w-full"
                         value={data.provincia}
-                        disabled={!data.departamento.id}
+                        disabled={!data.departamento?.id}
                         options={provincias.filter(
-                            (p) => p.departamento_id === data.departamento.id
+                            (p) => p.departamento_id === data.departamento?.id
                         )}
                         optionLabel="nombre"
                         onChange={(e) => setData("provincia", e.target.value)}
@@ -110,10 +110,10 @@ export default function DatosCliente({
                         inputId="distrito"
                         filter
                         className="w-full"
-                        disabled={!data.provincia.id}
+                        disabled={!data.provincia?.id}
                         value={data.distrito}
                         options={distritos.filter(
-                            (d) => d.provincia_id === data.provincia.id
+                            (d) => d.provincia_id === data.provincia?.id
                         )}
                         optionLabel="nombre"
                         optionValue="nombre"

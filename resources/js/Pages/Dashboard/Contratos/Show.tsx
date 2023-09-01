@@ -3,20 +3,17 @@ import { Head, usePage } from "@inertiajs/react";
 
 export type Props = {
     query: {
-        logo: string | undefined;
+        logo: boolean | undefined;
     } | null;
 };
 
-export default function Show({ contrato }) {
+export default function Show({ contrato }: { contrato: Contrato }) {
     const { query } = usePage<Props>().props;
-
-
-    
 
     return (
         <>
             <Head title="Corto Plazo" />
-            <CortoPlazo logo={query?.logo} {...contrato} />;
+            {/* <CortoPlazo logo={query?.logo} {...contrato} />; */}
         </>
     );
 }

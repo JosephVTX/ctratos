@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 
 import * as pdfjs from "pdfjs-dist";
+import Paper from "../paper/Paper";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 type Props = {
     file?: File;
+    logo?: boolean;
 };
-const PDF = ({ file }: Props) => {
+const PDF = ({ file, logo }: Props) => {
     const [pages, setPages] = useState<Array<JSX.Element>>([]);
     const loadPDF = async () => {
         const loadingTask = pdfjs.getDocument(URL.createObjectURL(file!));
@@ -24,7 +26,9 @@ const PDF = ({ file }: Props) => {
                 viewport,
             }).promise;
             newPages.push(
-                <img key={i} src={canvas.toDataURL()} alt={`Page ${i}`} />
+                <Paper logo={logo} showTitle={false}>
+                    <img key={i} src={canvas.toDataURL()} alt={`Page ${i}`} />
+                </Paper>
             );
         }
 
@@ -38,13 +42,15 @@ const PDF = ({ file }: Props) => {
     return pages;
 };
 
-export default function MediaPreview({ file }: Props) {
+export default function MediaPreview({ file, logo }: Props) {
     return (
         <>
             {file!.type === "application/pdf" ? (
-                <PDF file={file} />
+                <PDF file={file} logo={logo} />
             ) : (
-                <img src={URL.createObjectURL(file!)} alt="" />
+                <Paper showTitle={false} logo={logo}>
+                    <img src={URL.createObjectURL(file!)} alt="" />
+                </Paper>
             )}
         </>
     );

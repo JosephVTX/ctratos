@@ -4,6 +4,9 @@ import { formatCurrency } from "@/Helpers/Money";
 import { numberToText } from "@/Helpers/Text";
 import SubClausula from "../Partials/SubClausula";
 import Clausula from "../Partials/Clausula";
+import { textByGender } from "../Show/MedianoPlazo";
+import ImagePreview from "@/Components/media/ImagePreview";
+import MediaPreview from "@/Components/media/MediaPreview";
 
 export type Props = {
     id: number;
@@ -35,11 +38,11 @@ export type Props = {
     fecha_fin: string;
     correo: string;
     celular: string;
-    dni_anverso: string;
-    dni_reverso: string;
-    declaracion_jurada: string[];
-    sustento_declaracion_jurada: string[];
-    comprobantes_pago: string[];
+    dni_anverso: File | null;
+    dni_reverso: File | null;
+    declaracion_jurada: File[];
+    sustento_declaracion_jurada: File[];
+    comprobantes_pago: File[];
     ocupacion: string;
     moneda: string;
     banco_gjg: {
@@ -121,9 +124,10 @@ export default function CortoPlazo(props: Props) {
                     Provincia de {provincia.nombre} y Departamento de{" "}
                     {departamento.nombre}, a quien se le denominará{" "}
                     <b>
-                        {genero === "masculino"
-                            ? "“EL INVERSIONISTA”"
-                            : "“LA INVERSIONISTA”"}
+                        {textByGender(genero, [
+                            "“EL INVERSIONISTA”",
+                            "“LA INVERSIONISTA”",
+                        ])}
                     </b>
                     , bajo los siguiente términos y condiciones:
                 </p>
@@ -139,11 +143,10 @@ export default function CortoPlazo(props: Props) {
                     </SubClausula>
                     <SubClausula
                         sectionNumber="1.2"
-                        title={
-                            genero === "masculino"
-                                ? "EL INVERSIONISTA"
-                                : "LA INVERSIONISTA"
-                        }
+                        title={textByGender(genero, [
+                            "EL INVERSIONISTA",
+                            "LA INVERSIONISTA",
+                        ])}
                     >
                         es una persona natural, {ocupacion}, por el cual percibe
                         una contraprestación, que acumulada en el tiempo
@@ -158,17 +161,19 @@ export default function CortoPlazo(props: Props) {
                     <SubClausula sectionNumber="2.1">
                         El presente contrato tiene por objeto la voluntad de{" "}
                         <b>
-                            {genero === "masculino"
-                                ? "EL INVERSIONISTA"
-                                : "LA INVERSIONISTA"}
+                            {textByGender(genero, [
+                                "EL INVERSIONISTA",
+                                "LA INVERSIONISTA",
+                            ])}
                         </b>{" "}
                         en realizar el financiamiento con un aporte de capital
                         dentro de los proyectos que <b>EL INVERSOR</b> tiene o
                         está proyectando realizar, generándole a{" "}
                         <b>
-                            {genero === "masculino"
-                                ? "EL INVERSIONISTA"
-                                : "LA INVERSIONISTA"}
+                            {textByGender(genero, [
+                                "EL INVERSIONISTA",
+                                "LA INVERSIONISTA",
+                            ])}
                         </b>{" "}
                         una rentabilidad que las partes pactan en el presente
                         contrato.
@@ -181,9 +186,10 @@ export default function CortoPlazo(props: Props) {
                     <SubClausula sectionNumber="3.1">
                         Mediante la presente,{" "}
                         <b>
-                            {genero === "masculino"
-                                ? "EL INVERSIONISTA"
-                                : "LA INVERSIONISTA"}
+                            {textByGender(genero, [
+                                "EL INVERSIONISTA",
+                                "LA INVERSIONISTA",
+                            ])}
                         </b>{" "}
                         aporta al financiamiento de los proyectos de inversión
                         que ejecutará <b>EL INVERSOR</b> con un monto ascendente
@@ -554,36 +560,51 @@ export default function CortoPlazo(props: Props) {
             </Paper>
 
             <Paper title={paperTitle} showTitle={false} logo={logo}>
-                <img src={dni_anverso} alt="" />
-                <img src={dni_reverso} alt="" />
+                <div className="w-full h-[calc(1300px-220px)] gap-6 mb-4 flex justify-center flex-col items-center">
+                    <ImagePreview className="h-[360px]" file={dni_anverso!} />
+                    <ImagePreview className="h-[360px]" file={dni_reverso!} />
+                </div>
             </Paper>
+            {comprobantes_pago.map(
+                (comprobante_pago, index) =>
+                    comprobante_pago && (
+                        <Paper
+                            key={index}
+                            title={paperTitle}
+                            showTitle={false}
+                            logo={logo}
+                        >
+                            <div className="w-full h-[calc(1300px-220px)] gap-6 mb-4 flex justify-center flex-col items-center">
+                                <ImagePreview
+                                    className="h-[800px]"
+                                    file={comprobante_pago!}
+                                />
+                            </div>
+                        </Paper>
+                    )
+            )}
 
-            {declaracion_jurada.map((url, index) => (
-                <PaperMediaUrl
-                    title={paperTitle}
-                    logo={logo}
-                    url={url}
-                    key={index}
-                />
-            ))}
+            {declaracion_jurada.map(
+                (declaracion_jurada, index) =>
+                    declaracion_jurada && (
+                        <MediaPreview
+                            key={index}
+                            file={declaracion_jurada}
+                            logo={logo}
+                        />
+                    )
+            )}
 
-            {sustento_declaracion_jurada.map((url, index) => (
-                <PaperMediaUrl
-                    title={paperTitle}
-                    logo={logo}
-                    url={url}
-                    key={index}
-                />
-            ))}
-
-            {comprobantes_pago.map((url, index) => (
-                <PaperMediaUrl
-                    title={paperTitle}
-                    logo={logo}
-                    url={url}
-                    key={index}
-                />
-            ))}
+            {sustento_declaracion_jurada.map(
+                (sustento_declaracion_jurada, index) =>
+                    sustento_declaracion_jurada && (
+                        <MediaPreview
+                            key={index}
+                            file={sustento_declaracion_jurada}
+                            logo={logo}
+                        />
+                    )
+            )}
         </div>
     );
 }

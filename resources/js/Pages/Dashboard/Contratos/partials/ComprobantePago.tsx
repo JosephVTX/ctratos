@@ -26,7 +26,7 @@ export default function ComprobantePago({
             data.comprobantes_pago?.length ===
                 data.comprobantes_pago_codigo_operacion.length &&
             data.comprobantes_pago_codigo_operacion.every(
-                (value) => value !== null
+                (value) => value !== ""
             )
         );
     }, [data.comprobantes_pago, data.comprobantes_pago_codigo_operacion]);
@@ -35,7 +35,7 @@ export default function ComprobantePago({
         if (data.comprobantes_pago) {
             setData(
                 "comprobantes_pago_codigo_operacion",
-                Array.from(data.comprobantes_pago).map(() => null)
+                Array.from(data.comprobantes_pago).map(() => "")
             );
         }
     }, [data.comprobantes_pago]);
@@ -78,19 +78,26 @@ export default function ComprobantePago({
 
     return (
         <>
-            <button
-                className={`${isComplete ? "text-green-600" : "text-red-700"} underline`}
-                onClick={() => setVisible(true)}
-            >
-                {isComplete
-                    ? "Códigos Completos"
-                    : "Agregar Código Comprobante"}
-            </button>
-            {
-                <InputError message={errors.comprobantes_pago_codigo_operacion} />
-            }
+            {data.comprobantes_pago?.length && (
+                <>
+                    <button
+                        className={`${
+                            isComplete ? "text-green-600" : "text-red-700"
+                        } underline`}
+                        onClick={() => setVisible(true)}
+                    >
+                        {isComplete
+                            ? "Códigos Completos"
+                            : "Agregar Código Comprobante"}
+                    </button>
+                    <InputError
+                        message={errors.comprobantes_pago_codigo_operacion}
+                    />
+                </>
+            )}
+
             <Dialog
-                closable
+                closable={false}
                 header={` Comprobantes de Pago (${
                     data.comprobantes_pago?.length ?? 0
                 })`}

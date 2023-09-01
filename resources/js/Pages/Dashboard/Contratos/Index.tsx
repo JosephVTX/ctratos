@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Column } from "primereact/column";
+import { Column, ColumnFilterElementTemplateOptions } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Toolbar } from "primereact/toolbar";
 import { InputText } from "primereact/inputtext";
@@ -19,7 +19,7 @@ import { InputSwitch } from "primereact/inputswitch";
 import Can, { CanFn } from "@/Components/protect/Can";
 import MedianoPlazo from "@/Templates/Contratos/Show/MedianoPlazo";
 
-const getSeverity = (status) => {
+const getSeverity = (status: string) => {
     switch (status) {
         case "Rechazado":
             return "danger";
@@ -35,13 +35,13 @@ const getSeverity = (status) => {
     }
 };
 
-const estadoBodyTemplate = (rowData) => {
+const estadoBodyTemplate = (rowData: any) => {
     return (
         <Tag value={rowData.estado} severity={getSeverity(rowData.estado)} />
     );
 };
 
-export default function Index({ contratos }) {
+export default function Index({ contratos }: { contratos: Contrato[] }) {
     const [statuses] = useState(["Revision", "Aprobado", "Rechazado"]);
     const toast = useRef<Toast | never>(null);
     const [inputValue, setInputValue] = useSearch("search");
@@ -112,7 +112,7 @@ export default function Index({ contratos }) {
         </Can>
     );
 
-    const capitalTemplate = (rowData) => {
+    const capitalTemplate = (rowData: Contrato) => {
         return (
             <div className="flex justify-between">
                 <span>{rowData.moneda} </span>
@@ -122,7 +122,7 @@ export default function Index({ contratos }) {
         );
     };
 
-    const docTemplate = (rowData) => {
+    const docTemplate = (rowData: Contrato) => {
         return (
             <div className="flex flex-col items-center">
                 <p>{rowData.tipo_doc} </p>
@@ -131,7 +131,7 @@ export default function Index({ contratos }) {
         );
     };
 
-    const docLogoAction = (rowData) => {
+    const docLogoAction = (rowData: Contrato) => {
         return (
             <div className="flex items-center gap-4 justify-center">
                 <Button
@@ -146,7 +146,7 @@ export default function Index({ contratos }) {
         );
     };
 
-    const docAction = (rowData) => {
+    const docAction = (rowData: Contrato) => {
         return (
             <div className="flex items-center gap-4 justify-center">
                 <Button
@@ -161,7 +161,9 @@ export default function Index({ contratos }) {
         );
     };
 
-    const statusRowFilterTemplate = (options) => {
+    const statusRowFilterTemplate = (
+        options: ColumnFilterElementTemplateOptions
+    ) => {
         return (
             <Dropdown
                 value={options.value}

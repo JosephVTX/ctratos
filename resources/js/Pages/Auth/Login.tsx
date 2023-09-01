@@ -2,16 +2,19 @@ import { useEffect, FormEventHandler } from "react";
 import InputError from "@/Components/InputError";
 import { Link, useForm } from "@inertiajs/react";
 
+
+type InputAuthProps = {
+    value: string;
+    labelText?: string;
+    id?: string;
+} & React.ComponentProps<"input">;
+
 export const InputAuth = ({
     value,
     labelText = "",
     id = "",
     ...props
-}: {
-    value: string;
-    labelText?: string;
-    id?: string;
-} & React.ComponentProps<"input">) => {
+}: InputAuthProps) => {
     return (
         <div className="relative">
             <input

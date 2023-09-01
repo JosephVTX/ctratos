@@ -48,8 +48,7 @@ class PreviewRequest extends FormRequest
 
             'tipo_contrato' => 'required|string|max:255',
 
-            'rentabilidad' => 'required|array',
-            'rentabilidad.id' => 'required|numeric|min:1',
+            'rentabilidad' => 'required',
 
             'vigencia_contrato' => 'required',
 

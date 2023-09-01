@@ -55,23 +55,6 @@ type Props = {
 const cR = (capital: string, rentabilidad: number) =>
     parseInt(capital) * (rentabilidad / 100) + parseInt(capital);
 
-const Miss = ({ title }: { title: string }) => (
-    <span className="text-red-500 text-lg underline">{title}</span>
-);
-
-const formatDay = (day: string) => {
-    const f = numberToText(day);
-
-    const capilatized = f
-        .split(" ")
-        .map((word) => {
-            return word[0].toUpperCase() + word.slice(1);
-        })
-        .join(" ");
-
-    return capilatized;
-};
-
 export default function CortoPlazo(props: Props) {
     const {
         nombres,

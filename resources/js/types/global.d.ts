@@ -13,4 +13,5 @@ declare global {
 }
 declare global {
     export type SVGGraphics = any;
+    
 }
